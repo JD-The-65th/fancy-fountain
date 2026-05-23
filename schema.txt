@@ -1,0 +1,37 @@
+-- DEPENDENCIES --
+
+Fountain JS - https://github.com/jonnygreenwald/fountain-js
+PDFKit - https://github.com/foliojs/pdfkit
+
+-- App Flow -- 
+
+User Input -> Parser -> Formatter -> Masterer -> Output
+
+--- User Input ---
+
+We take the fountain script from the user, and grab any additional PDF files for appending / inserting (sheet music).
+  - Potentially take in a reference.json with additional information about sections, bookmarks, page numbers, etc.
+    - Potentially additional fonts?
+    - Decides which format(?)
+  - Take in an argument for which format the exported script will be in (decides which formatter to use.)
+    - Which takes precedent, reference.json or the command line argument?
+  
+
+--- Parser ---
+
+The Parser takes the script and converts it into a format that is usable by our formatter. 
+Probably just going to initially return the Fountain JS result, but if god forbid this project expand scope, could return an independent format.
+
+--- Formatter ---
+
+The formatter turns the parsed input into a PDF. That's it.
+The format of this PDF is decided by the formatter. Whether it be Screenplay, Stageplay, the formatter formats it.
+
+--- Masterer ---
+
+Appends / inserts any additional PDF files.
+Potentially outputs PDF as a booklet built in.
+
+--- Output ---
+
+Outputs the file, whether it be to a live display or a PDF file.
