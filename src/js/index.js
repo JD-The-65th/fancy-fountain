@@ -18,7 +18,7 @@ function createHeader(document, headerTitle) {
         .lineWidth(1)       
         .strokeColor('#000000')
         .stroke()
-        .moveDown(1);
+        .moveDown(0.5);
 }
 
 function createFooter(document, pageNumber) {
@@ -55,10 +55,30 @@ doc.on('pageAdded', () => createHeader(doc, "Nodes of Eventide High : Are You Ki
 
 createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 doc
+
+    // Draw Section
+    .moveDown(1.5)
+
+    .rect(doc.x, doc.y - 20, 460, 25).fill('#000000').stroke()
+
+    .moveUp(0.9)
+    .font('fonts/Inter/static/Inter_28pt-SemiBold.ttf')
+    .fillColor('white')
+    .text('#2 - Are You Kidding Me (Reprise)', {
+        align: 'center'  
+    }
+    )
+    
+    .fillColor('black')
+    .moveDown(0.75)
+
+
+
+    // End Section
+
     // Lizzy's Dialogue (LYRICS)
     .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
     .text('LIZZY', {
-        width: 410,
         align: 'center'  
     }
     )
@@ -89,7 +109,6 @@ doc
     .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
     .fontSize(12)
     .text('JORDAN', {
-        width: 410,
         align: 'center'  
     }
     )
@@ -101,13 +120,17 @@ doc
         indentAllLines: true
     }
     )
+
+    .moveDown(0.5)
     .text('JORDAN makes his way centerstage. He holds his phone up above his head, and THE NETWORK copies his movement.', {
-        width: 460,
+        width: 410,
         align: 'left',
         indent: 108,
         indentAllLines: true
     }
     )
+    .moveDown(0.5)
+
     .text('Calling all the folks of Eventide'.toUpperCase(), {
         width: 460,
         align: 'left'
@@ -144,6 +167,44 @@ doc
     }
     )
     .text('Now, will you take a vow?'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+
+    // Student's Dialogue (Action and Lyrics)
+    .moveDown(0.5)
+    .text('The STUDENTS of Eventide High make a bold, inspiring march on stage.', {
+        width: 410,
+        align: 'left',
+        indent: 108,
+        indentAllLines: true
+    }
+    )
+    .moveDown(0.5)
+
+    .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+    .text('STUDENTS', {
+        align: 'center'  
+    }
+    )
+    .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+    .text('WE ARE BY YOUR SIDE NOW'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('THEY\'LL HEAR OUR REPLY NOW'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('THEY\'RE RUNNING OUT OF TIME NOW'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('THEY\'RE LOW TIDE NOW'.toUpperCase(), {
         width: 460,
         align: 'left'
     }
