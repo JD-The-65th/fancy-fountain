@@ -100,7 +100,10 @@ function addScene(document, sceneText, sceneNumber, subScene = "") {
 
 }
 
-function addCharacter(document, characterName, extensionText) {
+function addCharacter(document, characterName, continued, extensionText,) {
+    if (continued) {
+        characterName = `(${characterName})`
+    }
     document
         .fontSize(12)
         .moveDown(0.5)
