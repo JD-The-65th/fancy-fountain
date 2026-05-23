@@ -183,6 +183,18 @@ function addCenteredText(document, centeredTextText) {
         )
 }
 
+function addSynopses(document, synopsesText) {
+    document
+        .fontSize(12)
+        .moveDown(0.5)
+        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .text(synopsesText, {
+            align: 'center',  
+            underline: true
+        }
+        )
+}
+
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
@@ -196,6 +208,8 @@ addSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
 
 addTransition(doc, "CUT TO:")
 addScene(doc, "INT. Eventide High : Atrium - Moments Later", 4)
+
+addSynopses(doc, "LIZZY enlists the help of JORDAN ALEXANDER to rally up the students.")
 
 addCharacter(doc, "LIZZY")
 addParenthetical(doc, "boldly")
