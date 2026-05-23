@@ -2,6 +2,7 @@
 
 Screenplay Tools - https://github.com/wildwinter/screenplay-tools
 PDFKit - https://github.com/foliojs/pdfkit
+(potentially) OpenSheetMusicDisplay - https://github.com/opensheetmusicdisplay/opensheetmusicdisplay
 
 -- App Flow -- 
 
