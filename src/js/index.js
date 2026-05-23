@@ -135,6 +135,7 @@ function addLyrics(document, lyricsText) {
 function addAction(document, actionText) {
     document
         .fontSize(12)
+        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
         .moveDown(0.5)
         .text(actionText, {
             width: 410,
