@@ -21,10 +21,41 @@ function createHeader(document, headerTitle) {
         .moveDown(1);
 }
 
+function createFooter(document, pageNumber) {
+    var y = document.page.height - 50
+    document
+        .font('fonts/EB Garamond/static/EBGaramond-SemiBold.ttf')
+        .fontSize(12)
+
+        .moveTo(document.page.width / 2 - 40, y)
+        .lineTo(document.page.width / 2 - 20, y) 
+        .lineWidth(0.5)       
+        .strokeColor('#000000')
+        .stroke()
+        
+        .moveTo(document.page.width / 2 + 20, y)
+        .lineTo(document.page.width / 2 + 40, y) 
+        .lineWidth(0.5)       
+        .strokeColor('#000000')
+        .stroke()
+
+        .moveTo(document.page.width / 2, y)
+        .text(pageNumber, 0, y, {
+            width: document.page.width,
+            height: 0,
+            baseline: 'middle',
+            lineBreak: false,
+            align: 'center',
+        });
+
+        
+}
+
 doc.on('pageAdded', () => createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 doc
+    // Lizzy's Dialogue (LYRICS)
     .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
     .text('LIZZY', {
         width: 410,
@@ -32,12 +63,28 @@ doc
     }
     )
     .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+    .text('Ted and Kev declared their war,'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('I need all the dirt you can find and then some more!'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('Get the people on our side, ound them into the floor'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
     .text('Before they gain advantage!'.toUpperCase(), {
         width: 460,
         align: 'left'
     }
     )
 
+    // Jordan's Dialogue (Spoken Text, Action, Lyrics)
     .moveDown(0.5)
     .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
     .fontSize(12)
@@ -71,12 +118,39 @@ doc
         align: 'left'
     }
     )
-
-    doc.text('1', doc.page.width / 2, doc.page.height - 50, {
-        lineBreak: false,
-        align: 'center',
+    .text('Ted and Kevin and their snide tricks'.toUpperCase(), {
+        width: 460,
+        align: 'left'
     }
-    );
+    )
+    .text('We stand unified'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('We may have our differences'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('Even still, the difference is'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('Stopping injustice is our biz'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+    .text('Now, will you take a vow?'.toUpperCase(), {
+        width: 460,
+        align: 'left'
+    }
+    )
+
+    // Footer
+    createFooter(doc, 1)
 
 
 // Add another page
