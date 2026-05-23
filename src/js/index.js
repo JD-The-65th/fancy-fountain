@@ -278,7 +278,7 @@ addPageBreak(doc, 1)
 
 addAction(doc, "The STUDENTS of Eventide High make a bold, inspiring march on stage.")
 
-addDualDialogue(doc, ["JORDAN", "STUDENTS"], ["Yes! Whew, still got it!", "WE ARE BY YOUR SIDE NOW! \nTHEY'LL HEAR OUR REPLY NOW!"])
+addDualDialogue(doc, ["JORDAN", "THE BIG SHOTS", "THE UNDERDOGS"], ["Yes! Whew, still got it!", "WE ARE BY YOUR SIDE NOW!", "\nTHEY'LL HEAR OUR REPLY NOW!"])
 
 addCharacter(doc, "STUDENTS")
 addLyrics(doc, "They're running out of time now!")
