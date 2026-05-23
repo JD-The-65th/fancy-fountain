@@ -214,6 +214,21 @@ function addNotes(document, notesText) {
         )
 }
 
+function addDualDialogue(document, characters = [], text = []) {
+    document
+        .fontSize(12)
+        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+
+        .table({rowStyles: { border: false },}).row(characters);
+
+    document
+        .moveUp(0.25)
+
+        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+
+        .table({rowStyles: { border: false },}).row(text)
+}
+
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
@@ -253,11 +268,7 @@ addLyrics(doc, "Now, will you take a vow?")
 
 addAction(doc, "The STUDENTS of Eventide High make a bold, inspiring march on stage.")
 
-addCharacter(doc, "STUDENTS")
-addLyrics(doc, "We are by your side now")
-addLyrics(doc, "They'll hear our reply now")
-addLyrics(doc, "They're running out of time now")
-addLyrics(doc, "They're low tide now!")
+addDualDialogue(doc, ["JORDAN", "STUDENTS"], ["Yes! Whew, still got it!", "WE ARE BY YOUR SIDE NOW!"])
 
 addFooter(doc, 1)
 
