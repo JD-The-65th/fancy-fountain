@@ -51,9 +51,22 @@ function createFooter(document, pageNumber) {
         
 }
 
-function createSection(document, sectionText, sectionNumber, sectionAltPageNumber) {
+function createSection(document, sectionName) {
+    document
+        .fontSize(28)
+        .moveDown(0.5)
+        .font('fonts/EB Garamond/static/EBGaramond-ExtraBold.ttf')
+        .text(sectionName, {
+            align: 'center'  
+        }
+        )
+}
+
+function createSubSection(document, sectionText, sectionNumber, sectionAltPageNumber) {
     // TODO: Add annotation to next page
     document
+        .fontSize(12)
+
         .moveDown(1.5)
 
         .rect(doc.x, doc.y - 20, 460, 25).fill('#000000').stroke()
@@ -72,6 +85,7 @@ function createSection(document, sectionText, sectionNumber, sectionAltPageNumbe
 
 function addCharacter(document, characterName) {
     document
+        .fontSize(12)
         .moveDown(0.5)
         .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
         .text(characterName, {
@@ -82,6 +96,7 @@ function addCharacter(document, characterName) {
 
 function addLyrics(document, lyricsText) {
     document
+        .fontSize(12)
         .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
         .text(lyricsText.toUpperCase(), {
             width: 460,
@@ -92,6 +107,7 @@ function addLyrics(document, lyricsText) {
 
 function addAction(document, actionText) {
     document
+        .fontSize(12)
         .moveDown(0.5)
         .text(actionText, {
             width: 410,
@@ -105,6 +121,7 @@ function addAction(document, actionText) {
 
 function addDialogue(document, dialogueText) {
     document
+        .fontSize(12)
         .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
         .text(dialogueText, {
             width: 460,
@@ -114,13 +131,30 @@ function addDialogue(document, dialogueText) {
         }
         )
 }
+function addParenthetical(document, parentheticalText) {
+    document
+        .fontSize(12)
+        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .text(`(${parentheticalText})`, {
+            width: 460,
+            align: 'left',
+            indent: 42,
+            indentAllLines: true
+
+        }
+        )
+}
 
 
 doc.on('pageAdded', () => createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 
-createSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
+createSection(doc, "Act 2")
+
+
+createSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
+
 
 addCharacter(doc, "LIZZY")
 addLyrics(doc, "Ted and Kev declared their war,")
