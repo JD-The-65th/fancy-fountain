@@ -201,7 +201,7 @@ addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 
 addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
 
-addSection(doc, "Act 2")
+addSection(doc, "Act Two")
 
 
 addSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
