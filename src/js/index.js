@@ -8,7 +8,7 @@ doc.pipe(fs.createWriteStream('testing.pdf'));
 
 function createHeader(document, headerTitle) {
     document
-        .font('fonts/EB Garamond/static/EBGaramond-SemiBold.ttf')
+        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
         .fontSize(12)
         .moveUp(2)
         .text(headerTitle, {align: "center"})
@@ -61,8 +61,8 @@ doc
 
     .rect(doc.x, doc.y - 20, 460, 25).fill('#000000').stroke()
 
-    .moveUp(0.9)
-    .font('fonts/Inter/static/Inter_28pt-SemiBold.ttf')
+    .moveUp(1)
+    .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
     .fillColor('white')
     .text('#2 - Are You Kidding Me (Reprise)', {
         align: 'center'  
