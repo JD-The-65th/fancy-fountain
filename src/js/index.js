@@ -194,6 +194,17 @@ function addSynopses(document, synopsesText) {
         }
         )
 }
+function addNotes(document, notesText) {
+    document
+        .fontSize(12)
+        .moveDown(0.5)
+        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .text(notesText, {
+            align: 'center',  
+            underline: true
+        }
+        )
+}
 
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
