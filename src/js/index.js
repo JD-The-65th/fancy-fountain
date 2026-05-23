@@ -100,15 +100,18 @@ function addScene(document, sceneText, sceneNumber, subScene = "") {
 
 }
 
-function addCharacter(document, characterName) {
+function addCharacter(document, characterName, extensionText) {
     document
         .fontSize(12)
         .moveDown(0.5)
         .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
         .text(characterName, {
-            align: 'center'  
+            align: 'center',
         }
-        )
+        );
+    if (extensionText) {
+        addParenthetical(document, extensionText);
+    }
 }
 
 function addTransition(document, transitionText) {
