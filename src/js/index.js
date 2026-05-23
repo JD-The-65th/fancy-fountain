@@ -6,6 +6,24 @@ const doc = new PDFDocument({size: 'letter'});
 
 doc.pipe(fs.createWriteStream('testing.pdf'));
 
+function createHeader(document, headerTitle) {
+    document
+        .font('fonts/EB Garamond/static/EBGaramond-SemiBold.ttf')
+        .fontSize(12)
+        .moveUp(2)
+        .text(headerTitle, {align: "center"})
+        .moveDown(0.25)
+        .moveTo(50, doc.y) 
+        .lineTo(doc.page.width - 50, doc.y) 
+        .lineWidth(1)       
+        .strokeColor('#000000')
+        .stroke()
+        .moveDown(1);
+}
+
+doc.on('pageAdded', () => createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
+
+createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 doc
     .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
     .text('LIZZY', {
