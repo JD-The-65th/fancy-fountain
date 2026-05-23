@@ -6,7 +6,7 @@ const doc = new PDFDocument({size: 'letter'});
 
 doc.pipe(fs.createWriteStream('testing.pdf'));
 
-function createHeader(document, headerTitle) {
+function addHeader(document, headerTitle) {
     document
         .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
         .fontSize(12)
@@ -21,7 +21,7 @@ function createHeader(document, headerTitle) {
         .moveDown(0.5);
 }
 
-function createFooter(document, pageNumber) {
+function addFooter(document, pageNumber) {
     var y = document.page.height - 50
     document
         .font('fonts/EB Garamond/static/EBGaramond-SemiBold.ttf')
@@ -51,7 +51,7 @@ function createFooter(document, pageNumber) {
         
 }
 
-function createSection(document, sectionName) {
+function addSection(document, sectionName) {
     document
         .fontSize(28)
         .moveDown(0.5)
@@ -62,7 +62,7 @@ function createSection(document, sectionName) {
         )
 }
 
-function createSubSection(document, sectionText, sectionNumber, sectionAltPageNumber) {
+function addSubSection(document, sectionText, sectionNumber, sectionAltPageNumber) {
     // TODO: Add annotation to next page
     document
         .fontSize(12)
@@ -146,14 +146,14 @@ function addParenthetical(document, parentheticalText) {
 }
 
 
-doc.on('pageAdded', () => createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
+doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
-createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
+addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 
-createSection(doc, "Act 2")
+addSection(doc, "Act 2")
 
 
-createSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
+addSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
 
 
 addCharacter(doc, "LIZZY")
@@ -184,7 +184,7 @@ addLyrics(doc, "They'll hear our reply now")
 addLyrics(doc, "They're running out of time now")
 addLyrics(doc, "They're low tide now!")
 
-createFooter(doc, 1)
+addFooter(doc, 1)
 
 
 // Add another page
