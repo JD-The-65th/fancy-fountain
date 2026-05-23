@@ -229,6 +229,12 @@ function addDualDialogue(document, characters = [], text = []) {
         .table({rowStyles: { border: false },}).row(text)
 }
 
+function addPageBreak(document, pageNumber) {
+    addFooter(document, pageNumber);
+    document
+        .addPage()
+}
+
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
@@ -266,11 +272,19 @@ addLyrics(doc, "Even still, the difference is")
 addLyrics(doc, "Stopping injustice is our biz")
 addLyrics(doc, "Now, will you take a vow?")
 
+addNotes(doc, "We insert a page break here solely for testing purposes.")
+
+addPageBreak(doc, 1)
+
 addAction(doc, "The STUDENTS of Eventide High make a bold, inspiring march on stage.")
 
-addDualDialogue(doc, ["JORDAN", "STUDENTS"], ["Yes! Whew, still got it!", "WE ARE BY YOUR SIDE NOW!"])
+addDualDialogue(doc, ["JORDAN", "STUDENTS"], ["Yes! Whew, still got it!", "WE ARE BY YOUR SIDE NOW! \nTHEY'LL HEAR OUR REPLY NOW!"])
 
-addFooter(doc, 1)
+addCharacter(doc, "STUDENTS")
+addLyrics(doc, "They're running out of time now!")
+addLyrics(doc, "They're low tide now!")
+
+addFooter(doc, 2)
 
 
 // Add another page
@@ -278,14 +292,6 @@ doc
     .addPage()
     .fontSize(25)
     .text('Here is some vector graphics...', 100, 100);
-
-// Add some text with annotations
-doc
-    .addPage()
-    .fillColor('blue')
-    .text('Here is a link!', 100, 100)
-    .underline(100, 100, 160, 27, { color: '#0000FF' })
-    .link(100, 100, 160, 27, 'http://google.com/');
 
 // Finalize PDF file
 doc.end();
