@@ -1,6 +1,6 @@
 -- DEPENDENCIES --
 
-Fountain JS - https://github.com/jonnygreenwald/fountain-js
+Screenplay Tools - https://github.com/wildwinter/screenplay-tools
 PDFKit - https://github.com/foliojs/pdfkit
 
 -- App Flow -- 
