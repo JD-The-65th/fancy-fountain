@@ -287,11 +287,5 @@ addLyrics(doc, "They're low tide now!")
 addFooter(doc, 2)
 
 
-// Add another page
-doc
-    .addPage()
-    .fontSize(25)
-    .text('Here is some vector graphics...', 100, 100);
-
 // Finalize PDF file
 doc.end();
