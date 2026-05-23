@@ -1,6 +1,7 @@
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
-const converter = require('number-to-words');
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+import converter from 'number-to-words';
+import remarkParse from 'remark-parse'
 
 // Create a document
 const doc = new PDFDocument({size: 'letter'});
