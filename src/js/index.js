@@ -1,5 +1,6 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const converter = require('number-to-words');
 
 // Create a document
 const doc = new PDFDocument({size: 'letter'});
@@ -54,12 +55,14 @@ function addFooter(document, pageNumber) {
 function addSection(document, sectionName) {
     document
         .fontSize(28)
-        .moveDown(0.5)
+        .moveDown(0.25)
         .font('fonts/EB Garamond/static/EBGaramond-ExtraBold.ttf')
         .text(sectionName, {
             align: 'center'  
         }
         )
+        .moveDown(0.25)
+
 }
 
 function addSubSection(document, sectionText, sectionNumber, sectionAltPageNumber) {
@@ -83,6 +86,19 @@ function addSubSection(document, sectionText, sectionNumber, sectionAltPageNumbe
         .moveDown(0.75)
 }
 
+function addScene(document, sceneText, sceneNumber, subScene = "") {
+    document
+        .fontSize(12)
+        .font('fonts/EB Garamond/static/EBGaramond-ExtraBold.ttf')
+        .text(`SCENE ${converter.toWords(sceneNumber).toUpperCase()}${subScene} - ${sceneText}`, {
+            width: 460,
+            align: 'left'
+        }
+        )
+        .moveDown(0.5)
+
+}
+
 function addCharacter(document, characterName) {
     document
         .fontSize(12)
@@ -90,6 +106,17 @@ function addCharacter(document, characterName) {
         .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
         .text(characterName, {
             align: 'center'  
+        }
+        )
+}
+
+function addTransition(document, transitionText) {
+    document
+        .fontSize(12)
+        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .text(transitionText, {
+            width: 460,
+            align: 'right'
         }
         )
 }
@@ -145,18 +172,33 @@ function addParenthetical(document, parentheticalText) {
         )
 }
 
+function addCenteredText(document, centeredTextText) {
+    document
+        .fontSize(12)
+        .moveDown(0.5)
+        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .text(centeredTextText, {
+            align: 'center'  
+        }
+        )
+}
 
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
+
+addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
 
 addSection(doc, "Act 2")
 
 
 addSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
 
+addTransition(doc, "CUT TO:")
+addScene(doc, "INT. Eventide High : Atrium - Moments Later", 4)
 
 addCharacter(doc, "LIZZY")
+addParenthetical(doc, "boldly")
 addLyrics(doc, "Ted and Kev declared their war,")
 addLyrics(doc, "I need all the dirt you can find and then some more!")
 addLyrics(doc, "Get the people on our side, pound them into the floor")
