@@ -51,167 +51,106 @@ function createFooter(document, pageNumber) {
         
 }
 
+function createSection(document, sectionText, sectionNumber, sectionAltPageNumber) {
+    // TODO: Add annotation to next page
+    document
+        .moveDown(1.5)
+
+        .rect(doc.x, doc.y - 20, 460, 25).fill('#000000').stroke()
+
+        .moveUp(1)
+        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+        .fillColor('white')
+        .text(`#${sectionNumber} - ${sectionText}       Page ${sectionAltPageNumber}`, {
+            align: 'center'  
+        }
+        )
+        
+        .fillColor('black')
+        .moveDown(0.75)
+}
+
+function addCharacter(document, characterName) {
+    document
+        .moveDown(0.5)
+        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+        .text(characterName, {
+            align: 'center'  
+        }
+        )
+}
+
+function addLyrics(document, lyricsText) {
+    document
+        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .text(lyricsText.toUpperCase(), {
+            width: 460,
+            align: 'left'
+        }
+        )
+}
+
+function addAction(document, actionText) {
+    document
+        .moveDown(0.5)
+        .text(actionText, {
+            width: 410,
+            align: 'left',
+            indent: 108,
+            indentAllLines: true
+        }
+        )
+        .moveDown(0.5)
+}
+
+function addDialogue(document, dialogueText) {
+    document
+        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .text(dialogueText, {
+            width: 460,
+            align: 'left',
+            indent: 36,
+            indentAllLines: true
+        }
+        )
+}
+
+
 doc.on('pageAdded', () => createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 createHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
-doc
 
-    // Draw Section
-    .moveDown(1.5)
+createSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
 
-    .rect(doc.x, doc.y - 20, 460, 25).fill('#000000').stroke()
+addCharacter(doc, "LIZZY")
+addLyrics(doc, "Ted and Kev declared their war,")
+addLyrics(doc, "I need all the dirt you can find and then some more!")
+addLyrics(doc, "Get the people on our side, pound them into the floor")
+addLyrics(doc, "Before they gain advantage!")
 
-    .moveUp(1)
-    .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
-    .fillColor('white')
-    .text('#2 - Are You Kidding Me (Reprise)', {
-        align: 'center'  
-    }
-    )
-    
-    .fillColor('black')
-    .moveDown(0.75)
+addCharacter(doc, "JORDAN")
+addDialogue(doc, "I'll see what I can manage.")
 
+addAction(doc, "JORDAN makes his way centerstage. He holds his phone up above his head, and THE NETWORK copies his movement.")
 
+addLyrics(doc, "Calling all the folks of Eventide")
+addLyrics(doc, "Lana needs our help; join by her side against")
+addLyrics(doc, "Ted and Kevin and their snide tricks")
+addLyrics(doc, "We stand unified!")
+addLyrics(doc, "We may have our differences")
+addLyrics(doc, "Even still, the difference is")
+addLyrics(doc, "Stopping injustice is our biz")
+addLyrics(doc, "Now, will you take a vow?")
 
-    // End Section
+addAction(doc, "The STUDENTS of Eventide High make a bold, inspiring march on stage.")
 
-    // Lizzy's Dialogue (LYRICS)
-    .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
-    .text('LIZZY', {
-        align: 'center'  
-    }
-    )
-    .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
-    .text('Ted and Kev declared their war,'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('I need all the dirt you can find and then some more!'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Get the people on our side, ound them into the floor'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Before they gain advantage!'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
+addCharacter(doc, "STUDENTS")
+addLyrics(doc, "We are by your side now")
+addLyrics(doc, "They'll hear our reply now")
+addLyrics(doc, "They're running out of time now")
+addLyrics(doc, "They're low tide now!")
 
-    // Jordan's Dialogue (Spoken Text, Action, Lyrics)
-    .moveDown(0.5)
-    .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
-    .fontSize(12)
-    .text('JORDAN', {
-        align: 'center'  
-    }
-    )
-    .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
-    .text('I\'ll see what I can manage.', {
-        width: 460,
-        align: 'left',
-        indent: 36,
-        indentAllLines: true
-    }
-    )
-
-    .moveDown(0.5)
-    .text('JORDAN makes his way centerstage. He holds his phone up above his head, and THE NETWORK copies his movement.', {
-        width: 410,
-        align: 'left',
-        indent: 108,
-        indentAllLines: true
-    }
-    )
-    .moveDown(0.5)
-
-    .text('Calling all the folks of Eventide'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Lana needs our help; join by her side against'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Ted and Kevin and their snide tricks'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('We stand unified'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('We may have our differences'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Even still, the difference is'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Stopping injustice is our biz'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('Now, will you take a vow?'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-
-    // Student's Dialogue (Action and Lyrics)
-    .moveDown(0.5)
-    .text('The STUDENTS of Eventide High make a bold, inspiring march on stage.', {
-        width: 410,
-        align: 'left',
-        indent: 108,
-        indentAllLines: true
-    }
-    )
-    .moveDown(0.5)
-
-    .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
-    .text('STUDENTS', {
-        align: 'center'  
-    }
-    )
-    .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
-    .text('WE ARE BY YOUR SIDE NOW'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('THEY\'LL HEAR OUR REPLY NOW'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('THEY\'RE RUNNING OUT OF TIME NOW'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-    .text('THEY\'RE LOW TIDE NOW'.toUpperCase(), {
-        width: 460,
-        align: 'left'
-    }
-    )
-
-    // Footer
-    createFooter(doc, 1)
+createFooter(doc, 1)
 
 
 // Add another page
