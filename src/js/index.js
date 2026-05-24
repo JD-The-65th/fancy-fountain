@@ -5,6 +5,11 @@ import remarkParse from 'remark-parse'
 
 import {fountainParser} from './parser/fountainParser.js'
 
+// Eventually, make our own Element Types and have the Parser return those instead
+// For now? Import 'em all babyeeee
+
+import {ElementType} from "../../ext/screenplay-tools/screenplayTools.js"
+
 
 // Create a document
 const doc = new PDFDocument({size: 'letter'});
@@ -238,6 +243,13 @@ function addPageBreak(document, pageNumber) {
         .addPage()
 }
 
+doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
+
+addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
+
+addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
+
+
 /* // OLD TEMPLATE PAGE CODE
 
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
@@ -295,8 +307,40 @@ addFooter(doc, 2)
 
 const scriptParser = new fountainParser;
 
-scriptParser.parseFile("ref/aykm.fountain")
+var script = scriptParser.parseFile("ref/aykm.fountain")
 
+for (const element in script.elements) {
+    switch (script.elements[element].type) {
+        case ElementType.CHARACTER:
+            addCharacter(doc, script.elements[element].name, false);
+            break;
+        case ElementType.ACTION:
+            addAction(doc, script.elements[element].text);
+            break;
+
+        case ElementType.DIALOGUE:
+            addDialogue(doc, script.elements[element].text);
+            break;
+
+        case ElementType.SECTION:
+            if (script.elements[element].level == 2) {
+                addSubSection(doc, script.elements[element]._text, 1, 1);
+                break;
+
+            }
+            else if (script.elements[element].level == 1) {
+                addSection(doc, script.elements[element]._text)
+                break;
+            }
+        case ElementType.LYRIC:
+            addLyrics(doc, script.elements[element].text);
+            break;
+
+        case ElementType.TRANSITION:
+            addTransition(doc, script.elements[element].text);
+            break;
+    }
+}
 
 // Finalize PDF file
 doc.end();

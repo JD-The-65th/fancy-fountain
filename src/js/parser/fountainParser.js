@@ -8,7 +8,6 @@ class fountainParser {
         var fileContent = fs.readFileSync(filePath, 'utf-8');
         let fp = new FountainParser();
         fp.addText(fileContent);
-        console.log(fp.script.dump());
         return fp.script;
   }
 }
