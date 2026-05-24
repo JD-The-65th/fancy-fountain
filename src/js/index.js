@@ -254,7 +254,7 @@ function marginChecker(document, lineOne, lineTwo, testLines = 0) {
             indent: 108,
             indentAllLines: true,
         })
-    return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 72
+    return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 60
 }
 
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
@@ -275,13 +275,24 @@ for (let token in script.tokens) {
     let addCont = false
     let testText = ""
     let testLines = 0
-    if (script.tokens[token].type === "character") {
+    if (script.tokens[token].type === "character" || script.tokens[token].type === "parenthetical") {
 
         for (let index = Number(token) + 1; index < script.tokens.length - 1; index++) {
             if (script.tokens[index].text !== undefined) {
                 if (script.tokens[index].type == "dialogue" || script.tokens[index].type == "lyric") {
-                    testText = script.tokens[index].text + "\n"
+                    testText = script.tokens[index].text
                     testLines = 0.5
+                }
+                if (script.tokens[index].type == "parenthetical") {
+                    for (let doubleIndex = index + 1; doubleIndex < script.tokens.length - 1; doubleIndex++) {
+                        if (script.tokens[doubleIndex].text !== undefined) {
+                            if (script.tokens[doubleIndex].type == "dialogue" || script.tokens[index].type == "lyric") {
+                                testText += "\n" + script.tokens[doubleIndex].text 
+                                testLines = 0.5
+                            }
+                            break;
+                        }
+                    }
                 }
                 break;
             }
