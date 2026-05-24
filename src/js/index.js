@@ -286,7 +286,7 @@ const scriptParser = new fountainParser;
 
 const doc = new PDFDocument({size: 'letter', bufferPages: true});
 
-let args = process.argv.slice(2)
+let args = process.argv
 
 let inputFilePath
 let outputFilePath
@@ -311,12 +311,12 @@ if (inputFilePath === undefined || outputFilePath === undefined) {
     process.exit()
 }
 
-var script = scriptParser.parseFile(process.argv[2] ? process.argv[2] : "ref/aykm.fountain")
+var script = scriptParser.parseFile(inputFilePath)
 
 let sectionIterator = 0;
 
 
-doc.pipe(fs.createWriteStream('testing.pdf'));
+doc.pipe(fs.createWriteStream(outputFilePath));
 
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
