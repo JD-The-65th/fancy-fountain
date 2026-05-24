@@ -35,9 +35,6 @@ for (let arg in args) {
         case ("--font" || "-F"):
             font = ["garamond", "inter", "courier"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
             break;
-        case ("--booklet" || "-B"):
-            booklet = true;
-            break;
         case ("--help" || "-H"):
             showHelpMessage()
             process.exit()

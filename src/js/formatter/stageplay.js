@@ -3,7 +3,7 @@ import { formatter } from './formatter';
 
 class stageplayFormatter extends formatter {
     constructor(doc) {
-        super();
+        super(doc);
     }
     addHeader(document, headerTitle) {
         document
@@ -110,7 +110,7 @@ class stageplayFormatter extends formatter {
             }
             );
         if (extensionText) {
-            addParenthetical(document, extensionText);
+            this.addParenthetical(document, extensionText);
         }
     }
 
