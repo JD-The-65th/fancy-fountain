@@ -237,20 +237,24 @@ function addPageBreak(document, pageNumber) {
         .addPage()
 }
 
-function marginChecker(document, lineOne, lineTwo) {
+function marginChecker(document, lineOne, lineTwo, testLines = 0) {
+    document.font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+    const lineHeight = document.currentLineHeight(true);
+
+
     let heightOne = document.heightOfString(lineOne, {
             width: 410,
             align: 'left',
             indent: 108,
-            indentAllLines: true
+            indentAllLines: true,
         })
     let heightTwo = document.heightOfString(lineTwo, {
             width: 410,
             align: 'left',
             indent: 108,
-            indentAllLines: true
+            indentAllLines: true,
         })
-    return true ? heightOne + heightTwo + document.y + 10 < document.page.height - 50 : false
+    return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 72
 }
 
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
@@ -261,22 +265,30 @@ addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
 
 const scriptParser = new fountainParser;
 
-var script = scriptParser.parseFile(process.argv[2])
+var script = scriptParser.parseFile(process.argv[2] ? process.argv[2] : "ref/aykm.fountain")
 
 let sectionIterator = 0;
 
 let pageNumber = 1;
 
-let startingX = doc.x
-let startingY = doc.y
-
 for (let token in script.tokens) {
     let addCont = false
-    let testText = script.tokens[token].text
-    if (script.tokens[token].type == "character" || script.tokens[token].type == "parenthetical") {
-        testText += "\n \n \n"
+    let testText = ""
+    let testLines = 0
+    if (script.tokens[token].type === "character") {
+
+        for (let index = Number(token) + 1; index < script.tokens.length - 1; index++) {
+            if (script.tokens[index].text !== undefined) {
+                if (script.tokens[index].type == "dialogue" || script.tokens[index].type == "lyric") {
+                    testText = script.tokens[index].text + "\n"
+                    testLines = 0.5
+                }
+                break;
+            }
+        }
     }
-    if (!marginChecker(doc, script.tokens[token].text, testText)){
+    
+    if (!marginChecker(doc, script.tokens[token].text, testText, testLines)){
             addFooter(doc, pageNumber) 
             pageNumber += 1
             doc.addPage()
@@ -347,6 +359,8 @@ for (let token in script.tokens) {
 
     }
 }
+
+addFooter(doc, pageNumber)
 
 // Finalize PDF file
 doc.end();
