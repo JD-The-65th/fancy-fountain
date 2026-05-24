@@ -26,16 +26,20 @@ let font = "garamond"
 
 for (let arg in args) {
     switch (args[arg]) {
-        case ("--input" || "-I"):
+        case ("--input"):
+        case ("-I"):
             inputFilePath = args[Number(arg) + 1];
             break;
-        case ("--output" || "-O"):
+        case ("--output"):
+        case ("-O"):
             outputFilePath = args[Number(arg) + 1];
             break;
-        case ("--font" || "-F"):
+        case ("--font"):
+        case ("-F"):
             font = ["garamond", "inter", "courier"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
             break;
-        case ("--help" || "-H"):
+        case ("--help"):
+        case ("-F"):
             showHelpMessage()
             process.exit()
             break;
@@ -90,7 +94,7 @@ for (let token in script.tokens) {
                 if (script.tokens[index].type == "parenthetical") {
                     for (let doubleIndex = index + 1; doubleIndex < script.tokens.length - 1; doubleIndex++) {
                         if (script.tokens[doubleIndex].text !== undefined) {
-                            if (script.tokens[doubleIndex].type == "dialogue" || script.tokens[index].type == "lyric") {
+                            if (script.tokens[doubleIndex].type == "dialogue" || script.tokens[doubleIndex].type == "lyric") {
                                 testText += "\n" + script.tokens[doubleIndex].text 
                                 testLines = 0.5
                             }
