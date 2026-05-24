@@ -272,7 +272,11 @@ let startingY = doc.y
 
 for (let token in script.tokens) {
     let addCont = false
-    if (!marginChecker(doc, script.tokens[token].text, script.tokens[token].text)){
+    let testText = script.tokens[token].text
+    if (script.tokens[token].type == "character" || script.tokens[token].type == "parenthetical") {
+        testText += "\n \n \n"
+    }
+    if (!marginChecker(doc, script.tokens[token].text, testText)){
             addFooter(doc, pageNumber) 
             pageNumber += 1
             doc.addPage()
