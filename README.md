@@ -2,7 +2,7 @@
 A Fancy Fountain App for exporting Fountain scripts.
 
 ## Why?
-For the sole purpose of exporting prettier scripts, primarily with Stageplay Formatting. It includes the EB Garamond and Inter fonts with Courier and Custom font support coming in a later update.
+For the sole purpose of exporting prettier scripts, primarily with Stageplay Formatting. It includes the EB Garamond, Courier, and Inter fonts, with custom font support coming in a later update.
 
 # Usage
 

@@ -13,7 +13,7 @@ function showHelpMessage() {
     console.log("Options:")
     console.log("   --input    |  -I             Input File Path (.fountain)")
     console.log("   --output   |  -O             Output File Path (.pdf) ")
-    console.log("   --font     |  -F             Selects a font to use (garamond | inter) ")
+    console.log("   --font     |  -F             Selects a font to use ( garamond | inter | courier ) ")
     console.log("   --help     |  -H             Displays this help message and exits. ")
     console.log("\nUsage: fancy-fountain --input ref/aykm.fountain --output testing.pdf")
 }
@@ -33,7 +33,7 @@ for (let arg in args) {
             outputFilePath = args[Number(arg) + 1];
             break;
         case ("--font" || "-F"):
-            font = ["garamond", "inter"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
+            font = ["garamond", "inter", "courier"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
             break;
         case ("--booklet" || "-B"):
             booklet = true;
@@ -106,7 +106,7 @@ for (let token in script.tokens) {
         }
     }
     if (!scriptFormatter.marginChecker(doc, script.tokens[token].text, testText, testLines)){
-            scriptFormatter.addFooter(doc, getCurrentPageNumber(doc) + 1) 
+            scriptFormatter.addFooter(doc, getCurrentPageNumber(doc)) 
             doc.addPage()
             addCont = true
     }
@@ -202,13 +202,13 @@ for (let token in script.tokens) {
             break;
         
         case "page_break":
-            scriptFormatter.addPageBreak(doc, getCurrentPageNumber(doc) + 1);
+            scriptFormatter.addPageBreak(doc, getCurrentPageNumber(doc));
             break;
 
     }
 }
 
-scriptFormatter.addFooter(doc, getCurrentPageNumber(doc) + 1)
+scriptFormatter.addFooter(doc, getCurrentPageNumber(doc))
 
 // Finalize PDF file
 doc.end();

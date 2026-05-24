@@ -10,6 +10,11 @@ import semiBoldInter from "../../../fonts/Inter/static/Inter_18pt-SemiBold.ttf" 
 import extraBoldInter from "../../../fonts/Inter/static/Inter_18pt-ExtraBold.ttf" with {type: "file" };
 import regularItalicizedInter from "../../../fonts/Inter/static/Inter_18pt-Italic.ttf" with { type: "file" };
 
+import regularCourier from "../../../fonts/Courier Prime/Courier Prime.ttf" with {type: "file"}
+import boldCourier from "../../../fonts/Courier Prime/Courier Prime Bold.ttf" with { type: "file" };
+import regularItalicizedCourier from "../../../fonts/Courier Prime/Courier Prime Italic.ttf" with { type: "file" };
+
+
 export function selectFont(document, font) {
     switch (font) {
         case "garamond":
@@ -25,6 +30,13 @@ export function selectFont(document, font) {
             document.registerFont('SemiBold', semiBoldInter);
             document.registerFont('ExtraBold', extraBoldInter);
             document.registerFont('RegularItalicized', regularItalicizedInter);
+            break;
+        case "courier":
+            document.registerFont('Regular', regularCourier);
+            document.registerFont('Bold', boldCourier);
+            document.registerFont('SemiBold', regularCourier);
+            document.registerFont('ExtraBold', boldCourier);
+            document.registerFont('RegularItalicized', regularItalicizedCourier);
             break;
     }
 }
