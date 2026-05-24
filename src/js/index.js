@@ -5,9 +5,41 @@ import remarkParse from 'remark-parse'
 
 import {fountainParser} from './parser/fountainParser.js'
 
+import regularGaramond from "../../fonts/EB Garamond/static/EBGaramond-Regular.ttf" with {type: "file"}
+import boldGaramond from "../../fonts/EB Garamond/static/EBGaramond-Bold.ttf" with { type: "file" };
+import semiBoldGaramond from "../../fonts/EB Garamond/static/EBGaramond-SemiBold.ttf" with { type: "file" };
+import extraBoldGaramond from "../../fonts/EB Garamond/static/EBGaramond-ExtraBold.ttf" with {type: "file" };
+import regularItalicizedGaramond from "../../fonts/EB Garamond/static/EBGaramond-Italic.ttf" with { type: "file" };
+
+import regularInter from "../../fonts/Inter/static/Inter_18pt-Regular.ttf" with {type: "file"}
+import boldInter from "../../fonts/Inter/static/Inter_18pt-Bold.ttf" with { type: "file" };
+import semiBoldInter from "../../fonts/Inter/static/Inter_18pt-SemiBold.ttf" with { type: "file" };
+import extraBoldInter from "../../fonts/Inter/static/Inter_18pt-ExtraBold.ttf" with {type: "file" };
+import regularItalicizedInter from "../../fonts/Inter/static/Inter_18pt-Italic.ttf" with { type: "file" };
+
+function selectFont(document, font) {
+    switch (font) {
+        case "garamond":
+            document.registerFont('Regular', regularGaramond);
+            document.registerFont('Bold', boldGaramond);
+            document.registerFont('SemiBold', semiBoldGaramond);
+            document.registerFont('ExtraBold', extraBoldGaramond);
+            document.registerFont('RegularItalicized', regularItalicizedGaramond);
+            break;
+        case "inter":
+            document.registerFont('Regular', regularInter);
+            document.registerFont('Bold', boldInter);
+            document.registerFont('SemiBold', semiBoldInter);
+            document.registerFont('ExtraBold', extraBoldInter);
+            document.registerFont('RegularItalicized', regularItalicizedInter);
+            break;
+    }
+}
+
+
 function addHeader(document, headerTitle) {
     document
-        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+        .font("Bold")
         .fontSize(12)
         .moveUp(2)
         .text(headerTitle, {align: "center"})
@@ -23,7 +55,7 @@ function addHeader(document, headerTitle) {
 function addFooter(document, pageNumber) {
     var y = document.page.height - 50
     document
-        .font('fonts/EB Garamond/static/EBGaramond-SemiBold.ttf')
+        .font("SemiBold")
         .fontSize(12)
 
         .moveTo(document.page.width / 2 - 40, y)
@@ -54,7 +86,7 @@ function addSection(document, sectionName) {
     document
         .fontSize(28)
         .moveDown(0.25)
-        .font('fonts/EB Garamond/static/EBGaramond-ExtraBold.ttf')
+        .font('ExtraBold')
         .text(sectionName, {
             align: 'center'  
         }
@@ -73,7 +105,7 @@ function addSubSection(document, sectionText, sectionNumber, sectionAltPageNumbe
         .rect(doc.x, doc.y - 20, 460, 25).fill('#000000').stroke()
 
         .moveUp(1)
-        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+        .font('Bold')
         .fillColor('white')
         .text(`#${sectionNumber} - ${sectionText}       Page ${sectionAltPageNumber}`, {
             align: 'center'  
@@ -87,7 +119,7 @@ function addSubSection(document, sectionText, sectionNumber, sectionAltPageNumbe
 function addScene(document, sceneText, sceneNumber, subScene = "") {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-ExtraBold.ttf')
+        .font('ExtraBold')
         .text(`SCENE ${converter.toWords(sceneNumber).toUpperCase()}${subScene} - ${sceneText}`, {
             width: 460,
             align: 'left'
@@ -104,7 +136,7 @@ function addCharacter(document, characterName, continued, extensionText,) {
     document
         .fontSize(12)
         .moveDown(0.5)
-        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+        .font('Bold')
         .text(characterName, {
             align: 'center',
         }
@@ -117,7 +149,7 @@ function addCharacter(document, characterName, continued, extensionText,) {
 function addTransition(document, transitionText) {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .font('Regular')
         .text(transitionText, {
             width: 460,
             align: 'right'
@@ -128,7 +160,7 @@ function addTransition(document, transitionText) {
 function addLyrics(document, lyricsText) {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .font('Regular')
         .text(lyricsText.toUpperCase(), {
             width: 460,
             align: 'left'
@@ -139,7 +171,7 @@ function addLyrics(document, lyricsText) {
 function addAction(document, actionText) {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .font('RegularItalicized')
         .moveDown(0.5)
         .text(actionText, {
             width: 410,
@@ -154,7 +186,7 @@ function addAction(document, actionText) {
 function addDialogue(document, dialogueText) {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .font('Regular')
         .text(dialogueText, {
             width: 460,
             align: 'left',
@@ -166,7 +198,7 @@ function addDialogue(document, dialogueText) {
 function addParenthetical(document, parentheticalText) {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .font('RegularItalicized')
         .text(`(${parentheticalText})`, {
             width: 460,
             align: 'left',
@@ -181,7 +213,7 @@ function addCenteredText(document, centeredTextText) {
     document
         .fontSize(12)
         .moveDown(0.5)
-        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .font('Regular')
         .text(centeredTextText, {
             align: 'center'  
         }
@@ -192,7 +224,7 @@ function addSynopses(document, synopsesText) {
     document
         .fontSize(12)
         .moveDown(0.5)
-        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .font('RegularItalicized')
         .text(synopsesText, {
             align: 'center',  
             underline: true
@@ -203,7 +235,7 @@ function addNotes(document, notesText) {
     document
         .fontSize(12)
         .moveDown(0.5)
-        .font('fonts/EB Garamond/static/EBGaramond-Italic.ttf')
+        .font('RegularItalicized')
         .text(notesText, {
             align: 'center',  
             underline: true
@@ -214,14 +246,14 @@ function addNotes(document, notesText) {
 function addDualDialogue(document, characters = [], text = []) {
     document
         .fontSize(12)
-        .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
+        .font('Bold')
 
         .table({rowStyles: { border: false },}).row(characters);
 
     document
         .moveUp(0.25)
 
-        .font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+        .font('Regular')
 
         .table({rowStyles: { border: false },}).row(text)
 }
@@ -233,7 +265,7 @@ function addPageBreak(document, pageNumber) {
 }
 
 function marginChecker(document, lineOne, lineTwo, testLines = 0) {
-    document.font('fonts/EB Garamond/static/EBGaramond-Regular.ttf')
+    document.font('Regular')
     const lineHeight = document.currentLineHeight(true);
 
 
@@ -276,20 +308,17 @@ function showHelpMessage() {
     console.log("Options:")
     console.log("   --input    |  -I             Input File Path (.fountain)")
     console.log("   --output   |  -O             Output File Path (.pdf) ")
+    console.log("   --font     |  -F             Selects a font to use (garamond | inter) ")
     console.log("   --help     |  -H             Displays this help message and exits. ")
     console.log("\nUsage: node src/js/index.js --input ref/aykm.fountain --output testing.pdf")
 }
-
-// Create a document
-
-const scriptParser = new fountainParser;
-
-const doc = new PDFDocument({size: 'letter', bufferPages: true});
 
 let args = process.argv
 
 let inputFilePath
 let outputFilePath
+let font = "garamond"
+let booklet = false
 
 for (let arg in args) {
     switch (args[arg]) {
@@ -299,6 +328,12 @@ for (let arg in args) {
         case ("--output" || "-O"):
             outputFilePath = args[Number(arg) + 1];
             break;
+        case ("--font" || "-F"):
+            font = ["garamond", "inter"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
+            break;
+        case ("--booklet" || "-B"):
+            booklet = true;
+            break;
         case ("--help" || "-H"):
             showHelpMessage()
             process.exit()
@@ -306,9 +341,16 @@ for (let arg in args) {
     }
 }
 
+// Create a document
+
+const scriptParser = new fountainParser;
+const doc = new PDFDocument({size: 'letter', bufferPages: true});
+
+selectFont(doc,font);
+
 if (inputFilePath === undefined || outputFilePath === undefined) {
-    showHelpMessage()
-    process.exit()
+    showHelpMessage();
+    process.exit();
 }
 
 var script = scriptParser.parseFile(inputFilePath)
