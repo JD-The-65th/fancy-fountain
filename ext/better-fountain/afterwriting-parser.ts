@@ -240,21 +240,6 @@ interface LexerReplacements{
     underline:string
 }
 
-var htmlreplacements:LexerReplacements = {
-    //image: '<img alt="$3" title="$3" src="$6">',
-    link: '<a href=\"$6\">$3</a>',
-    note: '<span class=\"note\">$1</span>',
-
-    line_break: '<br />',
-
-    bold_italic_underline: '<span class=\"bold italic underline\">$2</span>',
-    bold_underline: '<span class=\"bold underline\">$2</span>',
-    italic_underline: '<span class=\"italic underline\">$2</span>',
-    bold_italic: '<span class=\"bold italic\">$2</span>',
-    bold: '<span class=\"bold\">$2</span>',
-    italic: '<span class=\"italic\">$2</span>',
-    underline: '<span class=\"underline\">$2</span>',
-};
 export function lexer(s: string, type: string, replacer:LexerReplacements, titlepage:boolean = false) {
     if (!s) {
         return s;
@@ -750,6 +735,11 @@ export var parse = function (original_script: string): parseoutput {
         } else {
             if (thistoken.text.match(regex.parenthetical)) {
                 thistoken.type = "parenthetical";
+            }
+            else if (thistoken.text.match(regex.lyric)) {
+                thistoken.type = "lyric";
+                thistoken.text = thistoken.text.substring(1, thistoken.text.length)
+                thistoken.character = previousCharacter;
             } else {
                 thistoken.type = "dialogue";
                 processDialogueBlock(thistoken);
@@ -770,9 +760,6 @@ export var parse = function (original_script: string): parseoutput {
             if (thistoken.is("scene_heading", "transition")) {
                 thistoken.text = thistoken.text.toUpperCase();
                 title_page_started = true; // ignore title tags after first heading
-            }
-            if (thistoken.text && thistoken.text[0] === "~") {
-                thistoken.text = "*" + thistoken.text.substr(1) + "*";
             }
             if (thistoken.type != "action" && thistoken.type != "dialogue")
                 thistoken.text = thistoken.text.trim();

@@ -303,7 +303,61 @@ const scriptParser = new fountainParser;
 
 var script = scriptParser.parseFile("ref/aykm.fountain")
 
-console.log(script)
+let sectionIterator = 0;
+
+let pageNumber = 0;
+
+
+for (let token in script.tokens) {
+    switch (script.tokens[token].type) {
+        case "dialogue":
+            addDialogue(doc, script.tokens[token].text);
+            break;
+        case "lyric":
+            addLyrics(doc, script.tokens[token].text);
+            break;
+        case "character":
+            if (script.tokens[token].text.endsWith("(CONT'D)")) {
+                addCharacter(doc, script.tokens[token].text.substring(0, script.tokens[token].text.length - 9), true);
+            }
+            else {
+                addCharacter(doc, script.tokens[token].text, false);
+            }
+            break;
+        case "action":
+            addAction(doc, script.tokens[token].text);
+            break;
+        case "transition":
+            addTransition(doc, script.tokens[token].text);
+            break;
+        case "section":
+            if (script.tokens[token].level == 1) {
+                addSection(doc, script.tokens[token].text);
+            }
+            else if (script.tokens[token].level == 2) {
+                sectionIterator += 1;
+                addSubSection(doc, script.tokens[token].text, sectionIterator, 8);
+            }
+            break;
+        
+        case "parenthetical":
+            addParenthetical(doc, script.tokens[token].text);
+            break;
+        
+        case "scene_heading":
+            addScene(doc, script.tokens[token].text, script.tokens[token].number);
+            break;
+        case "centered":
+            addCenteredText(doc, script.tokens[token].text);
+            break;
+        
+        case "page_break":
+            addPageBreak(doc, pageNumber);
+            pageNumber += 1;
+            break;
+
+    }
+}
 
 // Finalize PDF file
 doc.end();
