@@ -5,12 +5,6 @@ import remarkParse from 'remark-parse'
 
 import {fountainParser} from './parser/fountainParser.js'
 
-// Eventually, make our own Element Types and have the Parser return those instead
-// For now? Import 'em all babyeeee
-
-import {ElementType} from "../../ext/screenplay-tools/screenplayTools.js"
-
-
 // Create a document
 const doc = new PDFDocument({size: 'letter'});
 

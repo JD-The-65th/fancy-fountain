@@ -1,4 +1,3 @@
-import { FountainParser } from "../../../ext/screenplay-tools/screenplayTools.js"
 import fs from 'fs';
 
 class fountainParser {
@@ -6,9 +5,7 @@ class fountainParser {
 
     parseFile(filePath = "") {
         var fileContent = fs.readFileSync(filePath, 'utf-8');
-        let fp = new FountainParser();
-        fp.addText(fileContent);
-        return fp.script;
+        return null;
   }
 }
 
