@@ -2,10 +2,25 @@
 A Fancy Fountain App for exporting Fountain scripts.
 
 ## Why?
-For the sole purpose of exporting prettier scripts, primarily with Stageplay Formatting.
+For the sole purpose of exporting prettier scripts, primarily with Stageplay Formatting. It includes the EB Garamond and Inter fonts with Courier and Custom font support coming in a later update.
+
+# Usage
+
+```
+fancy-fountain --input ref/aykm.fountain --output testing.pdf
+
+fancy-fountain -I ref/aykm.fountain -O testing.pdf --font inter
+
+```
 
 
-## Development
+# Usability
+
+This project is approximately 89% complete. It contains support for nearly all fountain features, with the exception of the Title Page and Emphasis markings.
+
+Currently, this project has title name at the top of all exported pdf's.
+
+# Development
 
 This project uses NPM and Bun. A compatibility mode for Node will eventually be made as development originally used NodeJS
 
