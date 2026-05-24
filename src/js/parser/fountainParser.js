@@ -4,9 +4,9 @@ class fountainParser {
     constructor() {}
 
     parseFile(filePath = "") {
-        var fileContent = fs.readFileSync(filePath, 'utf-8');
-        return null;
-  }
+        let fileContent = fs.readFileSync(filePath, 'utf-8');
+        
+    }
 }
 
 export {fountainParser};
