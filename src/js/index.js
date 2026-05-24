@@ -366,6 +366,11 @@ addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 
 addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
 
+let dualDialogueCharacterPool = []
+let dualDialogueDialoguePool = []
+let dualDialoguePending = false
+
+
 
 for (let token in script.tokens) {
     let addCont = false
@@ -394,13 +399,45 @@ for (let token in script.tokens) {
             }
         }
     }
-    
     if (!marginChecker(doc, script.tokens[token].text, testText, testLines)){
             addFooter(doc, getCurrentPageNumber(doc) + 1) 
             doc.addPage()
             addCont = true
     }
-    switch (script.tokens[token].type) {
+    if (script.tokens[token].dual) {
+        dualDialoguePending = true;
+        let characterIndex
+        switch (script.tokens[token].type) {
+            case "character":
+                dualDialogueCharacterPool.push(script.tokens[token].text)  
+                break;
+            case "dialogue":
+                characterIndex = dualDialogueCharacterPool.indexOf(script.tokens[token].character)
+                if (dualDialogueDialoguePool[characterIndex] !== undefined) {
+                    dualDialogueDialoguePool[characterIndex] += "\n" + script.tokens[token].text
+                }
+                else {
+                    dualDialogueDialoguePool[characterIndex] = script.tokens[token].text
+                }
+                break;
+            case "lyric":
+                characterIndex = dualDialogueCharacterPool.indexOf(script.tokens[token].character)
+                if (dualDialogueDialoguePool[characterIndex] !== undefined) {
+                    dualDialogueDialoguePool[characterIndex] += "\n" + script.tokens[token].text.toUpperCase()
+                }
+                else {
+                    dualDialogueDialoguePool[characterIndex] = script.tokens[token].text.toUpperCase()
+                }
+                break;
+        }
+    }
+    else if (dualDialoguePending) {
+        addDualDialogue(doc, dualDialogueCharacterPool, dualDialogueDialoguePool)
+        dualDialogueCharacterPool = []
+        dualDialogueDialoguePool = []
+        dualDialoguePending = false
+    }
+    else switch (script.tokens[token].type) {
         case "dialogue":
             if (addCont) {
                 if (script.tokens[token].character.endsWith("(CONT'D)")) {
