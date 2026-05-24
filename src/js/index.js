@@ -320,7 +320,7 @@ for (let token in script.tokens) {
     }
     
     if (!marginChecker(doc, script.tokens[token].text, testText, testLines)){
-            addFooter(doc, getCurrentPageNumber(doc)) 
+            addFooter(doc, getCurrentPageNumber(doc) + 1) 
             doc.addPage()
             addCont = true
     }
@@ -383,13 +383,13 @@ for (let token in script.tokens) {
             break;
         
         case "page_break":
-            addPageBreak(doc, getCurrentPageNumber(doc));
+            addPageBreak(doc, getCurrentPageNumber(doc) + 1);
             break;
 
     }
 }
 
-addFooter(doc, getCurrentPageNumber(doc))
+addFooter(doc, getCurrentPageNumber(doc) + 1)
 
 // Finalize PDF file
 doc.end();
