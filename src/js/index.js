@@ -269,18 +269,51 @@ function getCurrentPageNumber(document) {
         throw new Error('Unable to get current page number');
     }
     return currentPageNumber;
-  }
+}
 
+function showHelpMessage() {
+    console.log("Fancy Fountain (v0.9)")
+    console.log("Options:")
+    console.log("   --input    |  -I             Input File Path (.fountain)")
+    console.log("   --output   |  -O             Output File Path (.pdf) ")
+    console.log("   --help     |  -H             Displays this help message and exits. ")
+}
 
 // Create a document
 
 const scriptParser = new fountainParser;
 
+const doc = new PDFDocument({size: 'letter', bufferPages: true});
+
+let args = process.argv.slice(2)
+
+let inputFilePath
+let outputFilePath
+
+for (let arg in args) {
+    switch (args[arg]) {
+        case ("--input" || "-I"):
+            inputFilePath = args[Number(arg) + 1];
+            break;
+        case ("--output" || "-O"):
+            outputFilePath = args[Number(arg) + 1];
+            break;
+        case ("--help" || "-H"):
+            showHelpMessage()
+            process.exit()
+            break;
+    }
+}
+
+if (inputFilePath === undefined || outputFilePath === undefined) {
+    showHelpMessage()
+    process.exit()
+}
+
 var script = scriptParser.parseFile(process.argv[2] ? process.argv[2] : "ref/aykm.fountain")
 
 let sectionIterator = 0;
 
-const doc = new PDFDocument({size: 'letter', bufferPages: true});
 
 doc.pipe(fs.createWriteStream('testing.pdf'));
 
