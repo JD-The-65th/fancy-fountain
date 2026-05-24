@@ -3,6 +3,9 @@ import fs from 'fs';
 import converter from 'number-to-words';
 import remarkParse from 'remark-parse'
 
+import {fountainParser} from './parser/fountainParser.js'
+
+
 // Create a document
 const doc = new PDFDocument({size: 'letter'});
 
@@ -235,6 +238,8 @@ function addPageBreak(document, pageNumber) {
         .addPage()
 }
 
+/* // OLD TEMPLATE PAGE CODE
+
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
@@ -285,6 +290,12 @@ addLyrics(doc, "They're running out of time now!")
 addLyrics(doc, "They're low tide now!")
 
 addFooter(doc, 2)
+
+*/
+
+const scriptParser = new fountainParser;
+
+scriptParser.parseFile("ref/aykm.fountain")
 
 
 // Finalize PDF file
