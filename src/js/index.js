@@ -237,67 +237,27 @@ function addPageBreak(document, pageNumber) {
         .addPage()
 }
 
+function marginChecker(document, lineOne, lineTwo) {
+    let heightOne = document.heightOfString(lineOne, {
+            width: 410,
+            align: 'left',
+            indent: 108,
+            indentAllLines: true
+        })
+    let heightTwo = document.heightOfString(lineTwo, {
+            width: 410,
+            align: 'left',
+            indent: 108,
+            indentAllLines: true
+        })
+    return true ? heightOne + heightTwo + document.y + 10 < document.page.height - 50 : false
+}
+
 doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
 addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
 
 addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
-
-
-/* // OLD TEMPLATE PAGE CODE
-
-doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
-
-addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
-
-addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
-
-addSection(doc, "Act Two")
-
-
-addSubSection(doc, "Are You Kidding Me (Reprise)", 2, 1)
-
-addTransition(doc, "CUT TO:")
-addScene(doc, "INT. Eventide High : Atrium - Moments Later", 4)
-
-addSynopses(doc, "LIZZY enlists the help of JORDAN ALEXANDER to rally up the students.")
-
-addCharacter(doc, "LIZZY")
-addParenthetical(doc, "boldly")
-addLyrics(doc, "Ted and Kev declared their war,")
-addLyrics(doc, "I need all the dirt you can find and then some more!")
-addLyrics(doc, "Get the people on our side, pound them into the floor")
-addLyrics(doc, "Before they gain advantage!")
-
-addCharacter(doc, "JORDAN")
-addDialogue(doc, "I'll see what I can manage.")
-
-addAction(doc, "JORDAN makes his way centerstage. He holds his phone up above his head, and THE NETWORK copies his movement.")
-
-addLyrics(doc, "Calling all the folks of Eventide")
-addLyrics(doc, "Lana needs our help; join by her side against")
-addLyrics(doc, "Ted and Kevin and their snide tricks")
-addLyrics(doc, "We stand unified!")
-addLyrics(doc, "We may have our differences")
-addLyrics(doc, "Even still, the difference is")
-addLyrics(doc, "Stopping injustice is our biz")
-addLyrics(doc, "Now, will you take a vow?")
-
-addNotes(doc, "We insert a page break here solely for testing purposes.")
-
-addPageBreak(doc, 1)
-
-addAction(doc, "The STUDENTS of Eventide High make a bold, inspiring march on stage.")
-
-addDualDialogue(doc, ["JORDAN", "THE BIG SHOTS", "THE UNDERDOGS"], ["Yes! Whew, still got it!", "WE ARE BY YOUR SIDE NOW!", "\nTHEY'LL HEAR OUR REPLY NOW!"])
-
-addCharacter(doc, "STUDENTS")
-addLyrics(doc, "They're running out of time now!")
-addLyrics(doc, "They're low tide now!")
-
-addFooter(doc, 2)
-
-*/
 
 const scriptParser = new fountainParser;
 
@@ -305,15 +265,40 @@ var script = scriptParser.parseFile("ref/aykm.fountain")
 
 let sectionIterator = 0;
 
-let pageNumber = 0;
+let pageNumber = 1;
 
+let startingX = doc.x
+let startingY = doc.y
 
 for (let token in script.tokens) {
+    let addCont = false
+    if (!marginChecker(doc, script.tokens[token].text, script.tokens[token].text)){
+            addFooter(doc, pageNumber) 
+            pageNumber += 1
+            doc.addPage()
+            addCont = true
+    }
     switch (script.tokens[token].type) {
         case "dialogue":
+            if (addCont) {
+                if (script.tokens[token].character.endsWith("(CONT'D)")) {
+                    addCharacter(doc, script.tokens[token].character.substring(0, script.tokens[token].character.length - 9), true);
+                }
+                else {
+                    addCharacter(doc, script.tokens[token].character, true)
+                }
+            }
             addDialogue(doc, script.tokens[token].text);
             break;
         case "lyric":
+            if (addCont) {
+                if (script.tokens[token].character.endsWith("(CONT'D)")) {
+                    addCharacter(doc, script.tokens[token].character.substring(0, script.tokens[token].character.length - 9), true);
+                }
+                else {
+                    addCharacter(doc, script.tokens[token].character, true)
+                }
+            }
             addLyrics(doc, script.tokens[token].text);
             break;
         case "character":
