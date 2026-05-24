@@ -15,7 +15,7 @@ function showHelpMessage() {
     console.log("   --output   |  -O             Output File Path (.pdf) ")
     console.log("   --font     |  -F             Selects a font to use (garamond | inter) ")
     console.log("   --help     |  -H             Displays this help message and exits. ")
-    console.log("\nUsage: node src/js/index.js --input ref/aykm.fountain --output testing.pdf")
+    console.log("\nUsage: fancy-fountain --input ref/aykm.fountain --output testing.pdf")
 }
 
 let args = process.argv
