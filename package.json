@@ -1,1 +1,26 @@
-{}
+{
+  "name": "fancy-fountain",
+  "version": "1.0.0",
+  "description": "A Fancy Fountain App for exporting Fountain scripts.",
+  "homepage": "https://github.com/JD-The-65th/fancy-fountain#readme",
+  "bugs": {
+    "url": "https://github.com/JD-The-65th/fancy-fountain/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JD-The-65th/fancy-fountain.git"
+  },
+  "license": "MIT",
+  "author": "JD The 65th",
+  "type": "module",
+  "exports": "./src/js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.8.0",
+    "number-to-words": "^1.2.4",
+    "pdfkit": "^0.18.0",
+    "remark-parse": "^11.0.0"
+  }
+}
