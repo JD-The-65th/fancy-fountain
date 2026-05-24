@@ -261,7 +261,7 @@ addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
 
 const scriptParser = new fountainParser;
 
-var script = scriptParser.parseFile("ref/aykm.fountain")
+var script = scriptParser.parseFile(process.argv[2])
 
 let sectionIterator = 0;
 
