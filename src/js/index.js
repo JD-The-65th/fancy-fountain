@@ -48,8 +48,9 @@ for (let arg in args) {
 // Create a document
 
 const scriptParser = new fountainParser;
-const scriptFormatter = new stageplayFormatter(doc);
 const doc = new PDFDocument({size: 'letter', bufferPages: true});
+const scriptFormatter = new stageplayFormatter(doc);
+
 
 selectFont(doc,font);
 
