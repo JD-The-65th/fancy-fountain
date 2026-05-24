@@ -1,10 +1,132 @@
-import { calculateDialogueDuration, trimCharacterExtension, last, trimCharacterForceSymbol, parseLocationInformation, slugify } from "./utils";
-import { token, create_token } from "./token";
-import { Range, Position } from "vscode";
-import { getFountainConfig } from "./configloader";
-import * as vscode from 'vscode';
-import { AddDialogueNumberDecoration } from "./providers/Decorations";
-import helpers from "./helpers";
+// IMPORTED FROM token.ts
+
+export function create_token(text?: string, cursor?: number, line?: number, new_line_length?: number, type?:string){
+    var t:token={
+        text:text,
+        type:type,
+        start:cursor,
+        end:cursor,
+        line:line,
+        ignore:false,
+        number:undefined,
+        dual:undefined,
+        html:undefined,
+        level:undefined,
+        time:undefined,
+        character:undefined,
+        index:-1,
+        takeNumber:-1,
+        original_line:undefined,
+        is:function(...args:string[]){
+            return args.indexOf(this.type) !== -1;
+        },
+        is_dialogue:function() {
+            return this.is("character", "parenthetical", "dialogue");
+        },
+        name:function(){
+            var character = this.text;
+            var p = character.indexOf("(");
+            if (p !== -1) {
+                character = character.substring(0, p);
+            }
+            character = character.trim();
+            return character;
+        },
+        location:function() {
+            var location = this.text.trim();
+            location = location.replace(/^(INT\.?\/EXT\.?)|(I\/E)|(INT\.?)|(EXT\.?)/, "");
+            var dash = location.lastIndexOf(" - ");
+            if (dash !== -1) {
+                location = location.substring(0, dash);
+            }
+            return location.trim();
+        },
+        has_scene_time:function(time:any) {
+            var suffix = this.text.substring(this.text.indexOf(" - "));
+            return this.is("scene_heading") && suffix.indexOf(time) !== -1;
+        },
+        location_type:function(){
+            var location = this.text.trim();
+            if (/^I(NT.?)?\/E(XT.?)?/.test(location)) {
+                return "mixed";
+            }
+            else if (/^INT.?/.test(location)) {
+                return "int";
+            }
+            else if (/^EXT.?/.test(location)) {
+                return "ext";
+            }
+            return "other";
+        }
+    }
+    if(text) t.end=cursor + text.length - 1 + new_line_length;
+    return t;
+}
+export interface token {
+    text:string;
+    type:string;
+    start:number;
+    end:number;
+    line:number;
+    number:string;
+    dual:string;
+    html:string;
+    level:number;
+    time:number;
+    takeNumber:number;
+    original_line:number;
+    is:Function;
+    is_dialogue:Function;
+    name:Function;
+    location:Function;
+    has_scene_time:Function;
+    location_type:Function;
+    character:string;
+    ignore:boolean;
+    index:number;
+}
+
+// IMPORTED FROM utils.ts
+
+export const trimCharacterForceSymbol = (character: string): string => character.replace(/^[ \t]*@/, "");
+
+
+export const last = function (array: any[]): any {
+	return array[array.length - 1];
+}
+
+export function slugify(text: string): string
+{
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w-]+/g, '')       // Remove all non-word chars
+    .replace(/-{2,}/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+
+/**
+ * Trims character extensions, for example the parantheses part in `JOE (on the radio)`
+ */
+export const trimCharacterExtension = (character: string): string => character.replace(/[ \t]*(\(.*\))[ \t]*([ \t]*\^)?$/, "");
+
+export const parseLocationInformation = (scene_heading:RegExpMatchArray) => {
+	//input group 1 is int/ext, group 2 is location and time, group 3 is scene number
+	let splitLocationFromTime = scene_heading[2].match(/(.*)[-–—−](.*)/)
+	if (scene_heading != null && scene_heading.length>=3) {
+		return {
+			name: splitLocationFromTime ? splitLocationFromTime[1].trim() : scene_heading[2].trim(),
+			interior: scene_heading[1].indexOf('I') != -1,
+			exterior: scene_heading[1].indexOf('EX') != -1|| scene_heading[1].indexOf('E.')!= -1,
+			time_of_day: splitLocationFromTime ? splitLocationFromTime[2].trim() : ""
+		}
+	}
+	return null;
+}
+
+// END IMPORTED FROM utils.ts
+
+
 
 declare global {
     interface Array<T> {
@@ -194,8 +316,6 @@ export class screenplayProperties {
     structure: StructToken[];
 }
 export interface parseoutput {
-    scriptHtml: string,
-    titleHtml: string,
     title_page: {[index:string]:token[]},
     tokens: token[],
     tokenLines: { [line: number]: number }
@@ -204,9 +324,7 @@ export interface parseoutput {
     parseTime: number,
     properties: screenplayProperties
 }
-export var parse = function (original_script: string, cfg: any, generate_html: boolean): parseoutput {
-    var lastFountainEditor: vscode.Uri;
-    var config = getFountainConfig(lastFountainEditor);
+export var parse = function (original_script: string): parseoutput {
     var emptytitlepage = true;
     var script = original_script,
         result: parseoutput = {
@@ -220,8 +338,6 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
                 hidden:[]
             },
             tokens: [],
-            scriptHtml: "",
-            titleHtml: "",
             lengthAction: 0,
             lengthDialogue: 0,
             tokenLines: {},
@@ -357,8 +473,7 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
     const processDialogueBlock = (token:token) => {
         let textWithoutNotes = token.text.replace(regex.note_inline, "");
         processInlineNote(token.text, token.line);
-        token.time = calculateDialogueDuration(textWithoutNotes);
-        if (!cfg.print_notes) {
+        if (false) {
             token.text = textWithoutNotes;
             if(token.text.trim().length == 0) token.ignore = true;
         }
@@ -367,7 +482,7 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
     const processActionBlock = (token:token) => {
         let irrelevantActionLength = processInlineNote(token.text, token.line);
         token.time = (token.text.length - irrelevantActionLength) / 20;
-        if (!cfg.print_notes) {
+        if (false) {
             token.text = token.text.replace(regex.note_inline, "");
             if(token.text.trim().length == 0) token.ignore = true;
         }
@@ -399,7 +514,7 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
 
         
         if (text.trim().length === 0 && text !== "  ") {
-            var skip_separator = (cfg.merge_multiple_empty_lines && last_was_separator) || (ignoredLastToken && result.tokens.length>1 && result.tokens[result.tokens.length-1].type == "separator");
+            var skip_separator = (true && last_was_separator) || (ignoredLastToken && result.tokens.length>1 && result.tokens[result.tokens.length-1].type == "separator");
 
             if(ignoredLastToken) ignoredLastToken=false;
 
@@ -461,7 +576,7 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
             let sceneHeadingMatch = thistoken.text.match(regex.scene_heading);
             if (sceneHeadingMatch) {
                 thistoken.text = thistoken.text.replace(/^\./, "");
-                if (cfg.each_scene_on_new_page && scene_number !== 1) {
+                if (false && scene_number !== 1) {
                     var page_break = create_token();
                     page_break.type = "page_break";
                     page_break.start = thistoken.start;
@@ -477,7 +592,6 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
                 let cobj: StructToken = new StructToken();
                 cobj.text = thistoken.text;
                 cobj.children = null;
-                cobj.range = new Range(new Position(thistoken.line, 0), new Position(thistoken.line, thistoken.text.length));
 
 
 
@@ -550,7 +664,6 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
                 current_depth = thistoken.level;
                 cobj.level = thistoken.level;
                 cobj.children = [];
-                cobj.range = new Range(new Position(thistoken.line, 0), new Position(thistoken.line, thistoken.text.length));
                 cobj.section = true;
 
                 const level = current_depth > 1 && latestSectionOrScene(current_depth, token => token.section && token.level < current_depth)
@@ -573,10 +686,9 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
                 state = "dialogue";
                 thistoken.type = "character";
                 thistoken.takeNumber = takeCount++;
-                if (config.print_dialogue_numbers) AddDialogueNumberDecoration(thistoken)
                 thistoken.text = trimCharacterForceSymbol(thistoken.text);
                 if (thistoken.text[thistoken.text.length - 1] === "^") {
-                    if (cfg.use_dual_dialogue) {
+                    if (true) {
                         state = "dual_dialogue"
                         // update last dialogue to be dual:left
                         var dialogue_tokens = ["dialogue", "character", "parenthetical"];
@@ -684,174 +796,6 @@ export var parse = function (original_script: string, cfg: any, generate_html: b
         pushToken(create_token(undefined, undefined, undefined, undefined, "dual_dialogue_end"));
     }
 
-    
-    // tidy up separators
-
-    if (generate_html) {
-        var html = [];
-        var titlehtml = [];
-        var header = undefined;
-        var footer = undefined;
-        //Generate html for title page
-        if(!emptytitlepage){
-            for (const section of Object.keys(result.title_page)) {
-                result.title_page[section].sort(helpers.sort_index);
-                titlehtml.push(`<div class="titlepagesection" data-position="${section}">`);
-                let current_index = 0/*, previous_type = null*/;
-                while (current_index < result.title_page[section].length) {
-                    var current_token: token = result.title_page[section][current_index];
-                    if(current_token.ignore){
-                        current_index++;
-                        continue;
-                    }
-                    if (current_token.text != "") {
-                        current_token.html = lexer(current_token.text, undefined, htmlreplacements, true);
-                    }
-                    switch (current_token.type) {
-                        case 'title': titlehtml.push(`<h1 class="haseditorline titlepagetoken" id="sourceline_${current_token.line}">${current_token.html}</h1>`); break;
-                        case 'header': header = current_token; break;
-                        case 'footer': footer = current_token; break;
-                        default: titlehtml.push(`<p class="${current_token.type} haseditorline titlepagetoken" id="sourceline_${current_token.line}">${current_token.html}</p>`); break;
-                    }
-                    current_index++;
-                }
-                titlehtml.push(`</div>`);
-            }
-        }
-        if(header)
-            html.push(`<div class="header" id="sourceline_${header.line}">${header.html}</div>`);
-        else if(config.print_header)
-            html.push(`<div class="header">${lexer(config.print_header, undefined, htmlreplacements, true)}</div>`);
-
-        if(footer)
-            html.push(`<div class="footer" id="sourceline_${footer.line}">${footer.html}</div>`);
-        else if(config.print_footer)
-            html.push(`<div class="footer">${lexer(config.print_footer, undefined, htmlreplacements, true)}</div>`);
-
-
-
-        //Generate html for script
-        let current_index = 0;
-        var isaction = false;
-        while (current_index < result.tokens.length) {
-            var current_token: token = result.tokens[current_index];
-            if (current_token.text != "") {
-                current_token.html = lexer(current_token.text, current_token.type, htmlreplacements);
-            } else {
-                current_token.html = "";
-            }
-
-            if ((current_token.type == "action" || current_token.type == "centered") && !current_token.ignore) {
-                let classes = "haseditorline";
-
-                let elStart = "\n";
-                if(!isaction) elStart = "<p>" //first action element
-                if(current_token.type == "centered"){
-                    if(isaction) elStart = ""; //It's centered anyway, no need to add anything
-                    classes += " centered";
-                }
-                html.push(`${elStart}<span class="${classes}" id="sourceline_${current_token.line}">${current_token.html}</span>`);
-                
-                isaction = true;
-            }
-            else if (current_token.type == "separator" && isaction) {
-                if (current_index + 1 < result.tokens.length - 1) {
-                    //we're not at the end
-                    var next_type = result.tokens[current_index + 1].type
-                    if (next_type == "action" || next_type == "separator" || next_type == "centered") {
-                        html.push("\n");
-                    }
-                }
-                else if (isaction) {
-                    //we're at the end
-                    html.push("</p>")
-                }
-            }
-            else {
-                if (isaction) {
-                    //no longer, close the paragraph
-                    isaction = false;
-                    html.push("</p>");
-                }
-                switch (current_token.type) {
-                    case 'scene_heading':
-                        var content = current_token.html;
-                        if (cfg.embolden_scene_headers) {
-                            content = '<span class=\"bold haseditorline\" id="sourceline_' + current_token.line + '">' + content + '</span>';
-                        }
-
-                        html.push('<h3 class="haseditorline" data-scenenumber=\"' + current_token.number + '\" data-position=\"' + current_token.line + '\" ' + (current_token.number ? ' id=\"sourceline_' + current_token.line + '">' : '>') + content + '</h3>');
-                        break;
-                    case 'transition': html.push('<h2 class="haseditorline" id="sourceline_' + current_token.line + '">' + current_token.text + '</h2>'); break;
-
-                    case 'dual_dialogue_begin': html.push('<div class=\"dual-dialogue\">'); break;
-
-                    case 'dialogue_begin': html.push('<div class=\"dialogue' + (current_token.dual ? ' ' + current_token.dual : '') + '\">'); break;
-
-                    case 'character':
-                        if (current_token.dual == "left") {
-                            html.push('<div class=\"dialogue left\">');
-                        } else if (current_token.dual == "right") {
-                            html.push('</div><div class=\"dialogue right\">');
-                        }
-
-                        if (config.print_dialogue_numbers) {
-                            html.push('<h4 class="haseditorline" id="sourceline_' + current_token.line + '">' + current_token.takeNumber + ' – ' + current_token.text + '</h4>');
-                        } else {
-                            html.push('<h4 class="haseditorline" id="sourceline_' + current_token.line + '">' + current_token.text + '</h4>');
-                        }
-
-                        break;
-                    case 'parenthetical': html.push('<p class="haseditorline parenthetical\" id="sourceline_' + current_token.line + '" >' + current_token.html + '</p>'); break;
-                    case 'dialogue':
-                        if (current_token.text == "  ")
-                            html.push('<br>');
-                        else
-                            html.push('<p class="haseditorline" id="sourceline_' + current_token.line + '">' + current_token.html + '</p>');
-                        break;
-                    case 'dialogue_end': html.push('</div> '); break;
-                    case 'dual_dialogue_end': html.push('</div></div> '); break;
-
-                    case 'section': html.push('<p class="haseditorline section" id="sourceline_' + current_token.line + '" data-position=\"' + current_token.line + '\" data-depth=\"' + current_token.level + '\">' + current_token.text + '</p>'); break;
-                    case 'synopsis': html.push('<p class="haseditorline synopsis" id="sourceline_' + current_token.line + '" >' + current_token.html + '</p>'); break;
-                    case 'lyric': html.push('<p class="haseditorline lyric" id="sourceline_' + current_token.line + '">' + current_token.html + '</p>'); break;
-
-                    case 'note': html.push('<p class="haseditorline note" id="sourceline_' + current_token.line + '">' + current_token.html + '</p>'); break;
-                    case 'boneyard_begin': html.push('<!-- '); break;
-                    case 'boneyard_end': html.push(' -->'); break;
-
-                    case 'page_break': html.push('<hr />'); break;
-                    /* case 'separator':
-                         html.push('<br />');
-                         break;*/
-                }
-            }
-
-            //This has to be dealt with later, the tokens HAVE to stay, to keep track of the structure
-            /*
-            if (
-                (!cfg.print_actions && current_token.is("action", "transition", "centered", "shot")) ||
-                (!cfg.print_notes && current_token.type === "note") ||
-                (!cfg.print_headers && current_token.type === "scene_heading") ||
-                (!cfg.print_sections && current_token.type === "section") ||
-                (!cfg.print_synopsis && current_token.type === "synopsis") ||
-                (!cfg.print_dialogues && current_token.is_dialogue()) ||
-                (cfg.merge_multiple_empty_lines && current_token.is("separator") && previous_type === "separator")) {
-
-                result.tokens.splice(current_index, 1);
-                continue;
-            }
-            */
-
-            //previous_type = current_token.type;
-            current_index++;
-        }
-        result.scriptHtml = html.join('');
-        if (titlehtml && titlehtml.length > 0)
-            result.titleHtml = titlehtml.join('');
-        else
-            result.titleHtml = undefined;
-    }
     // clean separators at the end
     while (result.tokens.length > 0 && result.tokens[result.tokens.length - 1].type === "separator") {
         result.tokens.pop();

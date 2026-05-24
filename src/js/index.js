@@ -303,5 +303,7 @@ const scriptParser = new fountainParser;
 
 var script = scriptParser.parseFile("ref/aykm.fountain")
 
+console.log(script)
+
 // Finalize PDF file
 doc.end();
