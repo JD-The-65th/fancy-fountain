@@ -5,11 +5,6 @@ import remarkParse from 'remark-parse'
 
 import {fountainParser} from './parser/fountainParser.js'
 
-// Create a document
-const doc = new PDFDocument({size: 'letter'});
-
-doc.pipe(fs.createWriteStream('testing.pdf'));
-
 function addHeader(document, headerTitle) {
     document
         .font('fonts/EB Garamond/static/EBGaramond-Bold.ttf')
@@ -257,11 +252,27 @@ function marginChecker(document, lineOne, lineTwo, testLines = 0) {
     return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 60
 }
 
-doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
+// Source - https://stackoverflow.com/a/74800019
+// Posted by Vincent Maret, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-05-24, License - CC BY-SA 4.0
 
-addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
+function getCurrentPageNumber(document) {
+    const pageBuffer = document._pageBuffer;
+    const currentPage = document.page;
+    let currentPageNumber = null;
+    pageBuffer.forEach((page, i) => {
+        if (page === currentPage) {
+            currentPageNumber = i;
+        }
+    })
+    if (currentPageNumber === null) {
+        throw new Error('Unable to get current page number');
+    }
+    return currentPageNumber;
+  }
 
-addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
+
+// Create a document
 
 const scriptParser = new fountainParser;
 
@@ -269,7 +280,16 @@ var script = scriptParser.parseFile(process.argv[2] ? process.argv[2] : "ref/ayk
 
 let sectionIterator = 0;
 
-let pageNumber = 1;
+const doc = new PDFDocument({size: 'letter', bufferPages: true});
+
+doc.pipe(fs.createWriteStream('testing.pdf'));
+
+doc.on('pageAdded', () => addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
+
+addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
+
+addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
+
 
 for (let token in script.tokens) {
     let addCont = false
@@ -300,8 +320,7 @@ for (let token in script.tokens) {
     }
     
     if (!marginChecker(doc, script.tokens[token].text, testText, testLines)){
-            addFooter(doc, pageNumber) 
-            pageNumber += 1
+            addFooter(doc, getCurrentPageNumber(doc)) 
             doc.addPage()
             addCont = true
     }
@@ -364,14 +383,13 @@ for (let token in script.tokens) {
             break;
         
         case "page_break":
-            addPageBreak(doc, pageNumber);
-            pageNumber += 1;
+            addPageBreak(doc, getCurrentPageNumber(doc));
             break;
 
     }
 }
 
-addFooter(doc, pageNumber)
+addFooter(doc, getCurrentPageNumber(doc))
 
 // Finalize PDF file
 doc.end();
