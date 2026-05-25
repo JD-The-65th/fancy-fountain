@@ -51,11 +51,11 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
             }
             let paragraphChildren = []
             for (let item in parsed.children[paragraph].children) {
-                    let segmentDict = {}
-                    segmentDict["underlined"] = true ? underlinedSegments[segment].underlined : segmentDict["underlined"] = false;
+                let segmentDict = {}
+                segmentDict["underlined"] = true ? underlinedSegments[segment].underlined : segmentDict["underlined"] = false;
                     
-                    let textItem = parsed.children[paragraph].children[item]
-                    console.log(processTree(textItem, segmentDict))
+                let textItem = parsed.children[paragraph].children[item]
+                textSegments.push(processTree(textItem, segmentDict))
             }
                     
         }
