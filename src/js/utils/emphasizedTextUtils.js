@@ -62,9 +62,9 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
     let itr = 0;
     for (let textSegment of textSegments) {
             let textSegmentSettings = defaultTextSettings;
-            if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true }
-            if (textSegment.underlined) { textSegmentSettings["underline"] = true }
-            if (textSegment.italics) { textSegmentSettings["oblique"] = true }
+            if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true } else { textSegmentSettings["continued"] = false }
+            if (textSegment.underlined) { textSegmentSettings["underline"] = true } else { textSegmentSettings["underline"] = false }
+            if (textSegment.italics) { textSegmentSettings["oblique"] = true } else { textSegmentSettings["oblique"] = false }
             if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")}
 
             if (textSegment.text === undefined) {textSegment["text"] = "\n"; textSegmentSettings["continued"] = false }
