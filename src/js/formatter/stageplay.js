@@ -1,5 +1,7 @@
 import converter from 'number-to-words';
 import { formatter } from './formatter';
+import { addEmphasizedText } from "../utils/emphasizedTextUtils"
+
 
 class stageplayFormatter extends formatter {
     constructor(doc) {
@@ -51,15 +53,12 @@ class stageplayFormatter extends formatter {
     }
 
     addSection(document, sectionName) {
-    document
+        document
             .fontSize(28)
             .moveDown(0.25)
             .font('ExtraBold')
-            .text(sectionName, {
-                align: 'center'  
-            }
-            )
-            .moveDown(0.25)
+        addEmphasizedText(document, sectionName, {align: 'center'}, undefined, true)
+        document.moveDown(0.25)
 
     }
 
@@ -75,11 +74,8 @@ class stageplayFormatter extends formatter {
             .moveUp(1)
             .font('Bold')
             .fillColor('white')
-            .text(`#${sectionNumber} - ${sectionText}       Page ${sectionAltPageNumber}`, {
-                align: 'center'  
-            }
-            )
-            
+        addEmphasizedText(document, `#${sectionNumber} - ${sectionText}       Page ${sectionAltPageNumber}`, {align: 'center'}, undefined, true)
+        document
             .fillColor('black')
             .moveDown(0.75)
     }
@@ -88,12 +84,8 @@ class stageplayFormatter extends formatter {
         document
             .fontSize(12)
             .font('ExtraBold')
-            .text(`SCENE ${converter.toWords(sceneNumber).toUpperCase()}${subScene} - ${sceneText}`, {
-                width: 460,
-                align: 'left'
-            }
-            )
-            .moveDown(0.5)
+        addEmphasizedText(document, `SCENE ${converter.toWords(sceneNumber).toUpperCase()}${subScene} - ${sceneText}`, {width: 460, align: "left"}, undefined, true)
+        document.moveDown(0.5)
 
     }
 

@@ -6,4 +6,4 @@ import PDFDocument from 'pdfkit';
 const doc = new PDFDocument()
 selectFont(doc, "inter")
 
-addEmphasizedText(doc, "This isn't right, **this isn't fair,** stop! _***Let me go!***_ PLEASE! _*This Isn't Right!*_", {dummy: true});
+addEmphasizedText(doc, "INT.  _Eventide High_ : Councilor's Office - Afternoon", {dummy: true});

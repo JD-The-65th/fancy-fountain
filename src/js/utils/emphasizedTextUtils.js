@@ -38,7 +38,7 @@ function processTree(tree, existingQualities = []) {
     return existingQualities;
 }
 
-export function addEmphasizedText(document, text, defaultTextSettings, coordinates) {
+export function addEmphasizedText(document, text, defaultTextSettings, coordinates, customFont = false) {
     let underlinedSegments = parseUnderlines(text)
 
     let textSegments = []
@@ -65,7 +65,7 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
             if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true } else { textSegmentSettings["continued"] = false }
             if (textSegment.underlined) { textSegmentSettings["underline"] = true } else { textSegmentSettings["underline"] = false }
             if (textSegment.italics) { textSegmentSettings["oblique"] = true } else { textSegmentSettings["oblique"] = false }
-            if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")}
+            if (!customFont) { if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")} }
 
             if (textSegment.text === undefined) {textSegment["text"] = "\n"; textSegmentSettings["continued"] = false }
 
