@@ -94,8 +94,6 @@ for (let sectionToken in script.title_page) {
 }
 
 
-scriptFormatter.addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
-
 let dualDialogueCharacterPool = []
 let dualDialogueDialoguePool = []
 let dualDialoguePending = false
