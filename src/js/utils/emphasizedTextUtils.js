@@ -74,6 +74,9 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                     document.text(textSegment.text, textSegmentSettings)
                 }
             }
+            else {
+                document.text(textSegment.text, textSegmentSettings)
+            }
 
             itr += 1;
         }
