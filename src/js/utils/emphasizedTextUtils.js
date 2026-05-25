@@ -58,21 +58,19 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                 textSegments.push(processTree(textItem, segmentDict))
             }        
         }
-        let itr = -1;
     }
-    
+    let itr = 0;
     for (let textSegment of textSegments) {
-            itr += 1;
-            console.log(itr)
             let textSegmentSettings = defaultTextSettings;
             if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true }
             if (textSegment.underlined) { textSegmentSettings["underline"] = true }
             if (textSegment.italics) { textSegmentSettings["oblique"] = true }
             if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")}
 
+            if (textSegment.text === undefined) {textSegment["text"] = "\n"; textSegmentSettings["continued"] = false }
+
             if (itr === 0) {
                 if (coordinates !== undefined) {
-                    console.log(textSegmentSettings)
                     document.text(textSegment.text, coordinates[0], coordinates[1], textSegmentSettings)
                 }
                 else {
@@ -82,6 +80,7 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
             else {
                 document.text(textSegment.text, textSegmentSettings)
             }
+            itr += 1;
         }
 
 }
