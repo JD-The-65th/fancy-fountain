@@ -58,8 +58,12 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                 textSegments.push(processTree(textItem, segmentDict))
             }        
         }
-        let itr = 0;
-        for (let textSegment of textSegments) {
+        let itr = -1;
+    }
+    
+    for (let textSegment of textSegments) {
+            itr += 1;
+            console.log(itr)
             let textSegmentSettings = defaultTextSettings;
             if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true }
             if (textSegment.underlined) { textSegmentSettings["underline"] = true }
@@ -68,6 +72,7 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
 
             if (itr === 0) {
                 if (coordinates !== undefined) {
+                    console.log(textSegmentSettings)
                     document.text(textSegment.text, coordinates[0], coordinates[1], textSegmentSettings)
                 }
                 else {
@@ -77,9 +82,6 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
             else {
                 document.text(textSegment.text, textSegmentSettings)
             }
-
-            itr += 1;
         }
-    }
 
 }
