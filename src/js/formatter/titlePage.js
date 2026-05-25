@@ -10,17 +10,6 @@ export class titlePageFormatter extends formatter {
     bottomRightLineHeight = 0;
 
     addTitle(document, titleText) {
-        /*
-        document
-            .font("Regular")
-            .fontSize(12)
-            .text(titleText, 0, (document.page.height / 2 - document.heightOfString(titleText) * 2), {
-                width: document.page.width,
-                align: 'center',
-            }
-            )
-            .moveDown(0.5)
-        */
         document
             .font("Regular")
             .fontSize(12)
@@ -32,12 +21,8 @@ export class titlePageFormatter extends formatter {
         document
             .fontSize(12)
             .font('Regular')
-            .text(centeredTextText, {
-                width: document.page.width,
-                align: 'center'  
-            }
-            )
-            .moveDown(0.5)
+        addEmphasizedText(document, centeredTextText, {width: document.page.width, align: "center"})
+        document.moveDown(0.5)
     }
     addBottomLeftText(document, bottomLeftText) {
         this.bottomLeftLineHeight += document.heightOfString(bottomLeftText + "\n")
