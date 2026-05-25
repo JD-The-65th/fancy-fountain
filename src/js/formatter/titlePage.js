@@ -13,6 +13,17 @@ export class titlePageFormatter extends formatter {
                 align: 'center',
             }
             )
-            .moveDown(1)
+            .moveDown(0.5)
+    }
+    addCenteredText(document, centeredTextText) {
+        document
+            .fontSize(12)
+            .font('Regular')
+            .text(centeredTextText, {
+                width: document.page.width,
+                align: 'center'  
+            }
+            )
+            .moveDown(0.5)
     }
 }
