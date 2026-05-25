@@ -61,26 +61,26 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
     }
     let itr = 0;
     for (let textSegment of textSegments) {
-            let textSegmentSettings = defaultTextSettings;
-            if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true } else { textSegmentSettings["continued"] = false }
-            if (textSegment.underlined) { textSegmentSettings["underline"] = true } else { textSegmentSettings["underline"] = false }
-            if (textSegment.italics) { textSegmentSettings["oblique"] = true } else { textSegmentSettings["oblique"] = false }
-            if (!customFont) { if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")} }
+        let textSegmentSettings = defaultTextSettings;
+        if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true } else { textSegmentSettings["continued"] = false }
+        if (textSegment.underlined) { textSegmentSettings["underline"] = true } else { textSegmentSettings["underline"] = false }
+        if (textSegment.italics) { textSegmentSettings["oblique"] = true } else { textSegmentSettings["oblique"] = false }
+        if (!customFont) { if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")} }
 
-            if (textSegment.text === undefined) {textSegment["text"] = "\n"; textSegmentSettings["continued"] = false }
+         if (textSegment.text === undefined) {textSegment["text"] = "\n"; textSegmentSettings["continued"] = false }
 
-            if (itr === 0) {
-                if (coordinates !== undefined) {
-                    document.text(textSegment.text, coordinates[0], coordinates[1], textSegmentSettings)
-                }
-                else {
-                    document.text(textSegment.text, textSegmentSettings)
-                }
+        if (itr === 0) {
+            if (coordinates !== undefined) {
+                document.text(textSegment.text, coordinates[0], coordinates[1], textSegmentSettings)
             }
             else {
                 document.text(textSegment.text, textSegmentSettings)
             }
-            itr += 1;
         }
+        else {
+            document.text(textSegment.text, textSegmentSettings)
+        }
+        itr += 1;
+    }
 
 }
