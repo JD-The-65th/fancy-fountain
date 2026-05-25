@@ -31,7 +31,6 @@ export class titlePageFormatter extends formatter {
     }
     addBottomLeftText(document, bottomLeftText) {
         this.bottomLeftLineHeight += document.heightOfString(bottomLeftText + "\n")
-        console.log(this.bottomLeftLineHeight)
         document
             .fontSize(12)
             .font('Regular')

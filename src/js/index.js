@@ -76,7 +76,6 @@ let titleFormatter = new titlePageFormatter(doc);
 
 for (let sectionToken in script.title_page) {
     for (let titleToken in script.title_page[sectionToken]) {
-        console.log(script.title_page[sectionToken][titleToken].type)
         switch (script.title_page[sectionToken][titleToken].type) {
             case "title":
                 titleFormatter.addTitle(doc, script.title_page[sectionToken][titleToken].text);
