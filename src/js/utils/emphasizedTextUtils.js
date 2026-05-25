@@ -19,14 +19,19 @@ function parseUnderlines(str) {
 }
 
 function processTree(tree, existingQualities = [], childDictionary = []) {
+    // We have our Tree that we want to process, the existing qualities that the tree possesses, and a list of all of the other processed items
+    // If our tree is a Text item, we've reached the bottom of this re
     switch (tree.type) {
         case "text":
             existingQualities["text"] = tree.value
             childDictionary.push(existingQualities)
+            break;
         case "strong":
             existingQualities["bold"] = true
+            break;
         case "emphasis":
             existingQualities["italics"] = true
+            break;
     }
     if (tree.children !== undefined) {
         for (let child in tree.children) {
