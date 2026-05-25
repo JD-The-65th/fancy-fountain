@@ -6,6 +6,7 @@ import {fountainParser} from './parser/fountainParser.js'
 
 import { selectFont } from './utils/fontUtils.js';
 import { stageplayFormatter } from './formatter/stageplay.js';
+import { titlePageFormatter } from './formatter/titlePage.js';
 import { getCurrentPageNumber } from './utils/pdfUtils.js';
 
 function showHelpMessage() {
@@ -69,7 +70,18 @@ doc.pipe(fs.createWriteStream(outputFilePath));
 
 doc.on('pageAdded', () => scriptFormatter.addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
 
-scriptFormatter.addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]")
+let titleFormatter = new titlePageFormatter(doc);
+
+for (let sectionToken in script.title_page) {
+    for (let titleToken in script.title_page[sectionToken]) {
+        switch (script.title_page[sectionToken][titleToken].type) {
+            case "title":
+                titleFormatter.addTitle(doc, script.title_page[sectionToken][titleToken].text);
+        }
+    }
+
+}
+
 
 scriptFormatter.addCenteredText(doc, "Template Page - NOT FOR ACTUAL USAGE!")
 
