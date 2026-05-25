@@ -1,5 +1,7 @@
 import { formatter } from "./formatter";
 
+import { addEmphasizedText } from "../utils/emphasizedTextUtils"
+
 export class titlePageFormatter extends formatter {
     constructor(doc) {
         super(doc);
@@ -8,6 +10,7 @@ export class titlePageFormatter extends formatter {
     bottomRightLineHeight = 0;
 
     addTitle(document, titleText) {
+        /*
         document
             .font("Regular")
             .fontSize(12)
@@ -17,6 +20,13 @@ export class titlePageFormatter extends formatter {
             }
             )
             .moveDown(0.5)
+        */
+        document
+            .font("Regular")
+            .fontSize(12)
+        addEmphasizedText(document, titleText, { width: document.page.width, align: "center", }, [0, (document.page.height / 2 - document.heightOfString(titleText) * 2)])
+        document.moveDown(0.5)
+
     }
     addCenteredText(document, centeredTextText) {
         document
