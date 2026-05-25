@@ -11,7 +11,7 @@ export class titlePageFormatter extends formatter {
         document
             .font("Regular")
             .fontSize(12)
-            .text(titleText, 0, (document.page.height / 2 - document.heightOfString(titleText)), {
+            .text(titleText, 0, (document.page.height / 2 - document.heightOfString(titleText) * 2), {
                 width: document.page.width,
                 align: 'center',
             }
