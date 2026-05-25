@@ -101,8 +101,6 @@ let dualDialogueCharacterPool = []
 let dualDialogueDialoguePool = []
 let dualDialoguePending = false
 
-
-
 for (let token in script.tokens) {
     let addCont = false
     let testText = ""

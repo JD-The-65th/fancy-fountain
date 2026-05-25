@@ -227,7 +227,9 @@ class stageplayFormatter extends formatter {
     }
 
     addPageBreak(document, pageNumber) {
-        this.addFooter(document, pageNumber);
+        if (pageNumber != 0) {
+            this.addFooter(document, pageNumber);
+        }
         document.addPage()
     }
 
