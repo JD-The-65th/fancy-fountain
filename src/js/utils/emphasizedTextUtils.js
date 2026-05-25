@@ -18,20 +18,26 @@ function parseUnderlines(str) {
     return result;
 }
 
-function processTree(tree, treeDictionary) {
-    if (tree.children !== undefined) {
-        for (let child in tree.children) {
-            processTree(tree.children[child], treeDictionary)
-        }
-    }
+function processTree(tree, treeDictionary, children = []) {
+    let childDictionary = []
     switch (tree.type) {
         case "text":
-            treeDictionary["text"] = tree.value
+            console.log("Text Detected!")
+            childDictionary["text"] = tree.value
         case "strong":
-            break;
+            console.log("Bold Detected!")
+            childDictionary["bold"] = true
         case "emphasis":
-            break; 
+            console.log("Emphasis Detected!")
+            childDictionary["italics"] = true
     }
+    if (tree.children !== undefined) {
+        for (let child in tree.children) {
+            children.push(processTree(tree.children[child], childDictionary, children))
+        }
+    }
+    console.log(children)
+    return treeDictionary;
 }
 
 export function addEmphasizedText(document, text, defaultTextSettings, coordinates) {
@@ -51,23 +57,9 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                     segmentDict["underlined"] = true ? underlinedSegments[segment].underlined : segmentDict["underlined"] = false;
                     
                     let textItem = parsed.children[paragraph].children[item]
-                    switch (textItem.type) {
-                        case "text":
-                            segmentDict["text"] = textItem.value
-                            textSegments.push(segmentDict)
-                            break;
-                        case "strong":
-                            console.log(textItem)
-                            segmentDict["text"] = textItem.value
-                            segmentDict["bold"] = true
-                            textSegments.push(segmentDict)
-                            break;
-                        case "emphasis":
-                            for (let emphasizedItem in textItem.children) {
-                                // console.log(textItem.children[emphasizedItem])
-                            }
-                    }
-                }
+                    console.log(processTree(textItem, segmentDict))
+            }
+                    
         }
 
         // console.log(textSegments)
