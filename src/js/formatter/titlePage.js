@@ -33,7 +33,7 @@ export class titlePageFormatter extends formatter {
         addEmphasizedText(document, bottomLeftText, 
             {width: document.page.width - 54, align: 'left'}, 
             [54, document.page.height - 80 - this.bottomLeftLineHeight])
-            
+
         // Yes, I know this looks weird.
         // Some people put notes on the title page and DON'T frame them as notes.
         // FML.
@@ -44,12 +44,13 @@ export class titlePageFormatter extends formatter {
         document
             .fontSize(12)
             .font('Regular')
-            .text(bottomRightText, 0, document.page.height - 80 - this.bottomRightLineHeight, {
-                width: document.page.width - 54,
-                align: 'right'  
-            }
-            )
-            // Ditto.
-            .moveUp(16)
+        addEmphasizedText(document, bottomRightText, 
+            {width: document.page.width - 54,
+                align: 'right'
+            },
+            [0, document.page.height - 80 - this.bottomRightLineHeight]
+        )
+        // Ditto.
+        document.moveUp(16)
     }
 }
