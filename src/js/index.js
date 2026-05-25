@@ -68,7 +68,9 @@ let sectionIterator = 0;
 
 doc.pipe(fs.createWriteStream(outputFilePath));
 
-doc.on('pageAdded', () => scriptFormatter.addHeader(doc, "Nodes of Eventide High : Are You Kidding Me (Reprise) [FORUM]"));
+let documentTitle = inputFilePath.split('\\').pop().split('/').pop();
+
+doc.on('pageAdded', () => scriptFormatter.addHeader(doc, documentTitle));
 
 let titleFormatter = new titlePageFormatter(doc);
 
@@ -78,6 +80,7 @@ for (let sectionToken in script.title_page) {
         switch (script.title_page[sectionToken][titleToken].type) {
             case "title":
                 titleFormatter.addTitle(doc, script.title_page[sectionToken][titleToken].text);
+                documentTitle = script.title_page[sectionToken][titleToken].text.replaceAll("\n", " - ").replace(/\*|_/g, "")
                 break;
             case "credit":
                 titleFormatter.addCenteredText(doc, script.title_page[sectionToken][titleToken].text);
