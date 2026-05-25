@@ -58,13 +58,24 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                 textSegments.push(processTree(textItem, segmentDict))
             }        
         }
-
-        for (textSegment in textSegments) {
+        let itr = 0;
+        for (let textSegment of textSegments) {
             let textSegmentSettings = defaultTextSettings;
-            if (textSegments[Number(textSegment) + 1] !== undefined) { textSegmentSettings["continued"] = true }
-            if (textSegments[textSegment].underlined) { textSegmentSettings["underline"] = true }
-            if (textSegments[textSegment].italics) { textSegmentSettings["oblique"] = true }
-            if (textSegments[textSegment].bold) {document.font("Bold")} else {document.font("Regular")}
+            if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true }
+            if (textSegment.underlined) { textSegmentSettings["underline"] = true }
+            if (textSegment.italics) { textSegmentSettings["oblique"] = true }
+            if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")}
+
+            if (itr === 0) {
+                if (coordinates !== undefined) {
+                    document.text(textSegment.text, coordinates[0], coordinates[1], textSegmentSettings)
+                }
+                else {
+                    document.text(textSegment.text, textSegmentSettings)
+                }
+            }
+
+            itr += 1;
         }
     }
 
