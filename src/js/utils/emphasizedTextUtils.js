@@ -56,11 +56,16 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                     
                 let textItem = parsed.children[paragraph].children[item]
                 textSegments.push(processTree(textItem, segmentDict))
-            }
-                    
+            }        
         }
 
-        // console.log(textSegments)
+        for (textSegment in textSegments) {
+            let textSegmentSettings = defaultTextSettings;
+            if (textSegments[Number(textSegment) + 1] !== undefined) { textSegmentSettings["continued"] = true }
+            if (textSegments[textSegment].underlined) { textSegmentSettings["underline"] = true }
+            if (textSegments[textSegment].italics) { textSegmentSettings["oblique"] = true }
+            if (textSegments[textSegment].bold) {document.font("Bold")} else {document.font("Regular")}
+        }
     }
 
 }
