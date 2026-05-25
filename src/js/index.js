@@ -13,7 +13,7 @@ function showHelpMessage() {
     console.log("Options:")
     console.log("   --input    |  -I             Input File Path (.fountain)")
     console.log("   --output   |  -O             Output File Path (.pdf) ")
-    console.log("   --font     |  -F             Selects a font to use ( garamond | inter | courier ) ")
+    console.log("   --font     |  -F             Selects a font to use ( garamond | inter | courier | helvetica ) ")
     console.log("   --help     |  -H             Displays this help message and exits. ")
     console.log("\nUsage: fancy-fountain --input ref/aykm.fountain --output testing.pdf")
 }
@@ -36,7 +36,7 @@ for (let arg in args) {
             break;
         case ("--font"):
         case ("-F"):
-            font = ["garamond", "inter", "courier"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
+            font = ["garamond", "inter", "courier", "helvetica"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
             break;
         case ("--help"):
         case ("-F"):

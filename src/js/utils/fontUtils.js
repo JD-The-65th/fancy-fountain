@@ -38,5 +38,12 @@ export function selectFont(document, font) {
             document.registerFont('ExtraBold', boldCourier);
             document.registerFont('RegularItalicized', regularItalicizedCourier);
             break;
+        case "helvetica":
+            document.registerFont('Regular', "Helvetica");
+            document.registerFont('Bold', "Helvetica-Bold");
+            document.registerFont('SemiBold', "Helvetica");
+            document.registerFont('ExtraBold', "Helvetica-Bold");
+            document.registerFont('RegularItalicized', 'Helvetica-Oblique');
+            break;
     }
 }
