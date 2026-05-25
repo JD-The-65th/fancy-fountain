@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "fast-xml-parser": "^5.8.0",
+    "mdast-util-from-markdown": "^2.0.3",
     "number-to-words": "^1.2.4",
     "pdfkit": "^0.18.0",
     "remark-parse": "^11.0.0"
