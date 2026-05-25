@@ -18,26 +18,23 @@ function parseUnderlines(str) {
     return result;
 }
 
-function processTree(tree, treeDictionary, children = []) {
-    let childDictionary = []
+function processTree(tree, existingQualities = [], childDictionary = []) {
     switch (tree.type) {
         case "text":
-            console.log("Text Detected!")
-            childDictionary["text"] = tree.value
+            existingQualities["text"] = tree.value
+            childDictionary.push(existingQualities)
         case "strong":
-            console.log("Bold Detected!")
-            childDictionary["bold"] = true
+            existingQualities["bold"] = true
         case "emphasis":
-            console.log("Emphasis Detected!")
-            childDictionary["italics"] = true
+            existingQualities["italics"] = true
     }
     if (tree.children !== undefined) {
         for (let child in tree.children) {
-            children.push(processTree(tree.children[child], childDictionary, children))
+            processTree(tree.children[child], existingQualities)
         }
     }
-    console.log(children)
-    return treeDictionary;
+    console.log(childDictionary)
+    return childDictionary;
 }
 
 export function addEmphasizedText(document, text, defaultTextSettings, coordinates) {
@@ -57,7 +54,7 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
                     segmentDict["underlined"] = true ? underlinedSegments[segment].underlined : segmentDict["underlined"] = false;
                     
                     let textItem = parsed.children[paragraph].children[item]
-                    console.log(processTree(textItem, segmentDict))
+                    console.log(processTree(textItem, segmentDict, textSegments))
             }
                     
         }
