@@ -91,6 +91,15 @@ for (let sectionToken in script.title_page) {
             case "source":
                 titleFormatter.addCenteredText(doc, script.title_page[sectionToken][titleToken].text);
                 break;
+            case "copyright":
+                titleFormatter.addBottomLeftText(doc, script.title_page[sectionToken][titleToken].text);
+                break;
+            case "draft_date":
+            case "date":
+            case "contact":
+                titleFormatter.addBottomRightText(doc, script.title_page[sectionToken][titleToken].text);
+                break;
+                
         }
     }
 

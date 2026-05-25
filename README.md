@@ -16,9 +16,7 @@ fancy-fountain -I ref/aykm.fountain -O testing.pdf --font inter
 
 # Usability
 
-This project is approximately 89% complete. It contains support for nearly all fountain features, with the exception of the Title Page and Emphasis markings.
-
-Currently, this project has title name at the top of all exported pdf's.
+This project is approximately 94% complete. It contains support for nearly all fountain features, with the exception of Emphasis Markings.
 
 # Development
 
