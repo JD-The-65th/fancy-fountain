@@ -85,6 +85,9 @@ for (let sectionToken in script.title_page) {
             case "author":
                 titleFormatter.addCenteredText(doc, script.title_page[sectionToken][titleToken].text);
                 break;
+            case "source":
+                titleFormatter.addCenteredText(doc, script.title_page[sectionToken][titleToken].text);
+                break;
         }
     }
 
