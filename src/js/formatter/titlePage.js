@@ -29,15 +29,15 @@ export class titlePageFormatter extends formatter {
         document
             .fontSize(12)
             .font('Regular')
-            .text(bottomLeftText, 54, document.page.height - 80 - this.bottomLeftLineHeight, {
-                width: document.page.width - 54,
-                align: 'left', 
-            }
-            )
-            // Yes, I know this looks weird.
-            // Some people put notes on the title page and DON'T frame them as notes.
-            // FML.
-            .moveUp(16)
+
+        addEmphasizedText(document, bottomLeftText, 
+            {width: document.page.width - 54, align: 'left'}, 
+            [54, document.page.height - 80 - this.bottomLeftLineHeight])
+            
+        // Yes, I know this looks weird.
+        // Some people put notes on the title page and DON'T frame them as notes.
+        // FML.
+        document.moveUp(16)
     }
     addBottomRightText(document, bottomRightText) {
         this.bottomRightLineHeight += document.heightOfString(bottomRightText + "\n")
