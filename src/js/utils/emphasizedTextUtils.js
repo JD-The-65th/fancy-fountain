@@ -18,13 +18,10 @@ function parseUnderlines(str) {
     return result;
 }
 
-function processTree(tree, existingQualities = [], childDictionary = []) {
-    // We have our Tree that we want to process, the existing qualities that the tree possesses, and a list of all of the other processed items
-    // If our tree is a Text item, we've reached the bottom of this re
+function processTree(tree, existingQualities = []) {
     switch (tree.type) {
         case "text":
             existingQualities["text"] = tree.value
-            childDictionary.push(existingQualities)
             break;
         case "strong":
             existingQualities["bold"] = true
@@ -38,12 +35,10 @@ function processTree(tree, existingQualities = [], childDictionary = []) {
             processTree(tree.children[child], existingQualities)
         }
     }
-    console.log(childDictionary)
-    return childDictionary;
+    return existingQualities;
 }
 
 export function addEmphasizedText(document, text, defaultTextSettings, coordinates) {
-    // Singlehandedly the worst code I will ever write.
     let underlinedSegments = parseUnderlines(text)
 
     let textSegments = []
@@ -54,12 +49,13 @@ export function addEmphasizedText(document, text, defaultTextSettings, coordinat
             if (parsed.children[paragraph].type !== "paragraph") {
                 break;
             }
+            let paragraphChildren = []
             for (let item in parsed.children[paragraph].children) {
                     let segmentDict = {}
                     segmentDict["underlined"] = true ? underlinedSegments[segment].underlined : segmentDict["underlined"] = false;
                     
                     let textItem = parsed.children[paragraph].children[item]
-                    console.log(processTree(textItem, segmentDict, textSegments))
+                    console.log(processTree(textItem, segmentDict))
             }
                     
         }
