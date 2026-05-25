@@ -18,10 +18,24 @@ function parseUnderlines(str) {
     return result;
 }
 
+function processTree(tree, treeDictionary) {
+    if (tree.children !== undefined) {
+        for (let child in tree.children) {
+            processTree(tree.children[child], treeDictionary)
+        }
+    }
+    switch (tree.type) {
+        case "text":
+            treeDictionary["text"] = tree.value
+        case "strong":
+            break;
+        case "emphasis":
+            break; 
+    }
+}
+
 export function addEmphasizedText(document, text, defaultTextSettings, coordinates) {
     // Singlehandedly the worst code I will ever write.
-    // We are only going three levels deep with this.
-    // If you go more than three levels deep you had it coming.
     let underlinedSegments = parseUnderlines(text)
 
     let textSegments = []
