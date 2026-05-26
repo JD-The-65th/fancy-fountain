@@ -154,51 +154,46 @@ class stageplayFormatter extends formatter {
         document.x = oldX;
     }
     addParenthetical(document, parentheticalText) {
+        let oldX = document.x
         document
             .fontSize(12)
-            .font('RegularItalicized')
-            .text(`(${parentheticalText})`, {
+        addEmphasizedText(document, `(${parentheticalText})`, {
                 width: 460,
                 align: 'left',
-                indent: 42,
-                indentAllLines: true
-
-            }
-            )
+                oblique: true
+            }, [126, document.y])
+        document.x = oldX;
     }
 
     addCenteredText(document, centeredTextText) {
         document
             .fontSize(12)
             .moveDown(0.5)
-            .font('Regular')
-            .text(centeredTextText, {
+        addEmphasizedText(document, centeredTextText, {
                 align: 'center'  
-            }
-            )
+            })
     }
 
     addSynopses(document, synopsesText) {
         document
             .fontSize(12)
             .moveDown(0.5)
-            .font('RegularItalicized')
-            .text(synopsesText, {
+        addEmphasizedText(document, synopsesText, {
                 align: 'center',  
-                underline: true
-            }
-            )
+                underline: true,
+                oblique: true,
+            })
     }
     addNotes(document, notesText) {
         document
             .fontSize(12)
             .moveDown(0.5)
             .font('RegularItalicized')
-            .text(notesText, {
+        addEmphasizedText(document, notesText, {
                 align: 'center',  
-                underline: true
-            }
-            )
+                underline: true,
+                oblique: true,
+            })
     }
 
     addDualDialogue(document, characters = [], text = []) {
