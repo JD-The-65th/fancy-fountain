@@ -1,7 +1,15 @@
 class formatter {
-    constructor(doc) {
+    constructor(doc, booklet = false) {
         this.doc = doc;
+        if (booklet) {
+            this.defaultMargin = 72 * 0.5
+        }
+        else {
+            this.defaultMargin = 72
+        }
     }
+
+    defaultMargin = 72
     addHeader(document, headerTitle) {
         return
     }

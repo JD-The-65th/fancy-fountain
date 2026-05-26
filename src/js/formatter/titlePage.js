@@ -3,8 +3,8 @@ import { formatter } from "./formatter";
 import { addEmphasizedText } from "../utils/emphasizedTextUtils"
 
 export class titlePageFormatter extends formatter {
-    constructor(doc) {
-        super(doc);
+    constructor(doc, booklet) {
+        super(doc, booklet);
     }
     bottomLeftLineHeight = 0;
     bottomRightLineHeight = 0;

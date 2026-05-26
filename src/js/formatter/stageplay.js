@@ -2,25 +2,32 @@ import converter from 'number-to-words';
 import { formatter } from './formatter';
 import { addEmphasizedText } from "../utils/emphasizedTextUtils"
 
+// Note : 1 Inch == this.defaultMarginpx
+// Lyrics = 1 in from left
+// Dialogue = 1.5 in from left
+// Action = 2.5 in from left
+
 
 class stageplayFormatter extends formatter {
-    constructor(doc) {
-        super(doc);
+    constructor(doc, booklet) {
+        super(doc, booklet);
     }
+
     addHeader(document, headerTitle) {
         document
             .font("Bold")
             .fontSize(12)
             .moveUp(2)
-            .text(headerTitle, {align: "center"})
+            .text(headerTitle, this.defaultMargin, document.y, {align: "center", width: document.page.width - this.defaultMargin * 2})
             .moveDown(0.25)
-            .moveTo(50, document.y) 
-            .lineTo(document.page.width - 50, document.y) 
+            .moveTo(this.defaultMargin, document.y) 
+            .lineTo(document.page.width - this.defaultMargin, document.y) 
             .lineWidth(1)       
             .strokeColor('#000000')
             .stroke()
             .moveDown(0.5);
     }
+
 
     addFooter(document, pageNumber) {
         var y = document.page.height - 50
@@ -57,7 +64,7 @@ class stageplayFormatter extends formatter {
             .fontSize(28)
             .moveDown(0.25)
             .font('ExtraBold')
-        addEmphasizedText(document, sectionName, {align: 'center'}, undefined, true)
+        addEmphasizedText(document, sectionName, {align: 'center', width: document.page.width - this.defaultMargin * 2}, [this.defaultMargin, document.y], true)
         document.moveDown(0.25)
 
     }
@@ -69,22 +76,23 @@ class stageplayFormatter extends formatter {
 
             .moveDown(1.5)
 
-            .rect(document.x, document.y - 20, 460, 25).fill('#000000').stroke()
+            .rect(this.defaultMargin, document.y - 20, document.page.width - this.defaultMargin * 2, 25).fill('#000000').stroke()
 
             .moveUp(1)
             .font('Bold')
             .fillColor('white')
-        addEmphasizedText(document, `#${sectionNumber} - ${sectionText}       Page ${sectionAltPageNumber}`, {align: 'center'}, undefined, true)
+        addEmphasizedText(document, `#${sectionNumber} - ${sectionText}       Page ${sectionAltPageNumber}`, {align: 'center', width: document.page.width - this.defaultMargin * 2}, [this.defaultMargin, document.y], true)
         document
             .fillColor('black')
             .moveDown(0.75)
     }
 
     addScene(document, sceneText, sceneNumber, subScene = "") {
+        // Resized
         document
             .fontSize(12)
             .font('ExtraBold')
-        addEmphasizedText(document, `SCENE ${converter.toWords(sceneNumber).toUpperCase()}${subScene} - ${sceneText}`, {width: 460, align: "left"}, undefined, true)
+        addEmphasizedText(document, `SCENE ${converter.toWords(sceneNumber).toUpperCase()}${subScene} - ${sceneText}`, {width: document.page.width - this.defaultMargin * 2, align: "left"}, [this.defaultMargin, document.y], true)
         document.moveDown(0.5)
 
     }
@@ -97,9 +105,10 @@ class stageplayFormatter extends formatter {
             .fontSize(12)
             .moveDown(0.5)
             .font('Bold')
-            .text(characterName, {
+            .text(characterName, this.defaultMargin, document.y, {
                 align: 'center',
-            }
+                width: document.page.width - this.defaultMargin * 2
+            },
             );
         if (extensionText) {
             this.addParenthetical(document, extensionText);
@@ -110,8 +119,8 @@ class stageplayFormatter extends formatter {
         document
             .fontSize(12)
             .font('Regular')
-            .text(transitionText, {
-                width: 460,
+            .text(transitionText, this.defaultMargin, document.y, {
+                width: document.page.width - this.defaultMargin * 2,
                 align: 'right'
             }
             )
@@ -122,7 +131,7 @@ class stageplayFormatter extends formatter {
             .fontSize(12)
             .font('Regular')
         addEmphasizedText(document, lyricsText.toUpperCase(), {
-            width: 460,
+            width: document.page.width - this.defaultMargin * 2,
             align: 'left'
         })
     }
@@ -132,12 +141,10 @@ class stageplayFormatter extends formatter {
             .fontSize(12)
             .moveDown(0.5)
         addEmphasizedText(document, actionText, {
-                width: 410,
+                width: document.page.width - (this.defaultMargin * 2.5) - (this.defaultMargin + (this.defaultMargin * 0.5)),
                 align: 'left',
-                indent: 108,
-                indentAllLines: true,
                 oblique: true
-            }
+            }, [this.defaultMargin * 2.5, document.y]
             )
         document.moveDown(0.5)
     }
@@ -148,9 +155,9 @@ class stageplayFormatter extends formatter {
             .fontSize(12)
             .font('Regular')
         addEmphasizedText(document, dialogueText, {
-            width: 460,
-                align: 'left',
-            }, [108, document.y])
+            width: document.page.width - (this.defaultMargin + (this.defaultMargin / 2)) - this.defaultMargin,
+            align: 'left',
+            }, [this.defaultMargin + (this.defaultMargin / 2), document.y])
         document.x = oldX;
     }
     addParenthetical(document, parentheticalText) {
@@ -158,10 +165,10 @@ class stageplayFormatter extends formatter {
         document
             .fontSize(12)
         addEmphasizedText(document, `(${parentheticalText})`, {
-                width: 460,
+                width: document.page.width - (this.defaultMargin + 54) - this.defaultMargin,
                 align: 'left',
                 oblique: true
-            }, [126, document.y])
+            }, [(this.defaultMargin + 54), document.y])
         document.x = oldX;
     }
 
@@ -170,8 +177,9 @@ class stageplayFormatter extends formatter {
             .fontSize(12)
             .moveDown(0.5)
         addEmphasizedText(document, centeredTextText, {
-                align: 'center'  
-            })
+                align: 'center',
+                width: document.page.width - this.defaultMargin * 2
+            }, [this.defaultMargin, document.y])
     }
 
     addSynopses(document, synopsesText) {
@@ -182,7 +190,8 @@ class stageplayFormatter extends formatter {
                 align: 'center',  
                 underline: true,
                 oblique: true,
-            })
+                width: document.page.width - this.defaultMargin * 2
+            }, [this.defaultMargin, document.y])
     }
     addNotes(document, notesText) {
         document
@@ -193,14 +202,14 @@ class stageplayFormatter extends formatter {
                 align: 'center',  
                 underline: true,
                 oblique: true,
-            })
+                width: document.page.width - this.defaultMargin * 2
+            }, [this.defaultMargin, document.y])
     }
 
     addDualDialogue(document, characters = [], text = []) {
         document
             .fontSize(12)
             .font('Bold')
-
             .table({rowStyles: { border: false },}).row(characters);
 
         document
@@ -224,16 +233,12 @@ class stageplayFormatter extends formatter {
 
 
         let heightOne = document.heightOfString(lineOne, {
-                width: 410,
+                width: document.page.width - (this.defaultMargin * 2),
                 align: 'left',
-                indent: 108,
-                indentAllLines: true,
             })
         let heightTwo = document.heightOfString(lineTwo, {
-                width: 410,
+                width: document.page.width - (this.defaultMargin * 2),
                 align: 'left',
-                indent: 108,
-                indentAllLines: true,
             })
         return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 60
     }

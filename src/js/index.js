@@ -23,6 +23,7 @@ let args = process.argv
 let inputFilePath
 let outputFilePath
 let font = "garamond"
+let booklet = false
 
 for (let arg in args) {
     switch (args[arg]) {
@@ -43,14 +44,22 @@ for (let arg in args) {
             showHelpMessage()
             process.exit()
             break;
+        case ("--booklet"):
+        case ("-B"):
+            booklet = true
+            break;
+
     }
 }
 
 // Create a document
+// Note : 1 Inch == 72px
+// US Paper ( 8.5 x 11 in ) == (612, 792)
+// Booklet Page (5.5 x 8.5 in ) == (396, 612)
 
 const scriptParser = new fountainParser;
-const doc = new PDFDocument({size: 'letter', bufferPages: true});
-const scriptFormatter = new stageplayFormatter(doc);
+const doc = new PDFDocument({size: booklet ? [396, 612] : 'letter', bufferPages: true});console.log(doc.page.width, doc.page.height)
+const scriptFormatter = new stageplayFormatter(doc, booklet);
 
 
 selectFont(doc,font);
