@@ -58,7 +58,7 @@ for (let arg in args) {
 // Booklet Page (5.5 x 8.5 in ) == (396, 612)
 
 const scriptParser = new fountainParser;
-const doc = new PDFDocument({size: booklet ? [396, 612] : 'letter', bufferPages: true});console.log(doc.page.width, doc.page.height)
+const doc = new PDFDocument({size: booklet ? [396, 612] : 'letter', bufferPages: true});
 const scriptFormatter = new stageplayFormatter(doc, booklet);
 
 
