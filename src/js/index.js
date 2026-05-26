@@ -113,6 +113,7 @@ for (let token in script.tokens) {
     let addCont = false
     let testText = ""
     let testLines = 0
+    if (script.tokens[token].type === "action" || script.tokens[token].type === "scene_heading") { testLines = 1 }
     if (script.tokens[token].type === "character" || script.tokens[token].type === "parenthetical") {
 
         for (let index = Number(token) + 1; index < script.tokens.length - 1; index++) {
