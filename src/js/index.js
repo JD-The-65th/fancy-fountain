@@ -142,7 +142,7 @@ for (let token in script.tokens) {
             doc.addPage()
             addCont = true
     }
-    if (script.tokens[token].dual) {
+    if (script.tokens[token].dual || script.tokens[token].character !== undefined && dualDialogueCharacterPool.includes(script.tokens[token].character)) {
         dualDialoguePending = true;
         let characterIndex
         switch (script.tokens[token].type) {
