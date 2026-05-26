@@ -121,39 +121,37 @@ class stageplayFormatter extends formatter {
         document
             .fontSize(12)
             .font('Regular')
-            .text(lyricsText.toUpperCase(), {
-                width: 460,
-                align: 'left'
-            }
-            )
+        addEmphasizedText(document, lyricsText.toUpperCase(), {
+            width: 460,
+            align: 'left'
+        })
     }
 
     addAction(document, actionText) {
         document
             .fontSize(12)
-            .font('RegularItalicized')
             .moveDown(0.5)
-            .text(actionText, {
+        addEmphasizedText(document, actionText, {
                 width: 410,
                 align: 'left',
                 indent: 108,
-                indentAllLines: true
+                indentAllLines: true,
+                oblique: true
             }
             )
-            .moveDown(0.5)
+        document.moveDown(0.5)
     }
 
     addDialogue(document, dialogueText) {
+        let oldX = document.x
         document
             .fontSize(12)
             .font('Regular')
-            .text(dialogueText, {
-                width: 460,
+        addEmphasizedText(document, dialogueText, {
+            width: 460,
                 align: 'left',
-                indent: 36,
-                indentAllLines: true
-            }
-            )
+            }, [108, document.y])
+        document.x = oldX;
     }
     addParenthetical(document, parentheticalText) {
         document

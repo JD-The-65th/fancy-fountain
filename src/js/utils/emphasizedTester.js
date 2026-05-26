@@ -6,4 +6,4 @@ import PDFDocument from 'pdfkit';
 const doc = new PDFDocument()
 selectFont(doc, "inter")
 
-addEmphasizedText(doc, "INT.  _Eventide High_ : Councilor's Office - Afternoon", {dummy: true});
+addEmphasizedText(doc, "Can you wait _until_ I cash in my favor to do... whatever *that* is?", {dummy: true});
