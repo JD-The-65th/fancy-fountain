@@ -31,43 +31,48 @@ function processTree(tree, existingQualities = []) {
             break;
     }
     if (tree.children !== undefined) {
-        for (let child in tree.children) {
-            processTree(tree.children[child], existingQualities)
+        for (let child of tree.children) {
+            processTree(child, existingQualities)
         }
     }
     return existingQualities;
 }
 
 export function addEmphasizedText(document, text, defaultTextSettings, coordinates, customFont = false) {
+    text = text.replaceAll("\n", "--||PARSERBREAK||--").replaceAll(" ", "--||PARSERSPACE||--")
     let underlinedSegments = parseUnderlines(text)
 
     let textSegments = []
-    for (let segment in underlinedSegments) {
-        let parsed = fromMarkdown(underlinedSegments[segment].text);
+    for (let segment of underlinedSegments) {
+        if (segment.text === "\n") {
+            textSegments.push(segment)
+            continue;
+        }
+        let parsed = fromMarkdown(segment.text);
 
-        for (let paragraph in parsed.children) {
-            if (parsed.children[paragraph].type !== "paragraph") {
+        for (let paragraph of parsed.children) {
+            if (paragraph.type !== "paragraph") {
                 break;
             }
             let paragraphChildren = []
-            for (let item in parsed.children[paragraph].children) {
+            for (let item of paragraph.children) {
                 let segmentDict = {}
-                segmentDict["underlined"] = true ? underlinedSegments[segment].underlined : segmentDict["underlined"] = false;
+                segmentDict["underlined"] = true ? segment.underlined : segmentDict["underlined"] = false;
                     
-                let textItem = parsed.children[paragraph].children[item]
-                textSegments.push(processTree(textItem, segmentDict))
+                textSegments.push(processTree(item, segmentDict))
             }        
         }
     }
     let itr = 0;
     for (let textSegment of textSegments) {
+        textSegment.text = textSegment.text.replaceAll("--||PARSERBREAK||--", "\n").replaceAll("--||PARSERSPACE||--", " ") // What ever man.
+        if (textSegment.text === "\n") { textSegment.text = "\n\n"} // This fixes that??? ...What even.
         let textSegmentSettings = defaultTextSettings;
         if (textSegments[itr + 1] !== undefined) { textSegmentSettings["continued"] = true } else { textSegmentSettings["continued"] = false }
         if (textSegment.underlined) { textSegmentSettings["underline"] = true } else { textSegmentSettings["underline"] = false }
         if (textSegment.italics) { textSegmentSettings["oblique"] = true } else { textSegmentSettings["oblique"] = false }
         if (!customFont) { if (textSegment.bold) {document.font("Bold")} else {document.font("Regular")} }
 
-         if (textSegment.text === undefined) {textSegment["text"] = "\n"; textSegmentSettings["continued"] = false }
 
         if (itr === 0) {
             if (coordinates !== undefined) {
