@@ -212,10 +212,19 @@ class stageplayFormatter extends formatter {
 
     addDualDialogue(document, characters = [], text = {}, lineCount) {
         document.x = this.defaultMargin
+        
         document
             .fontSize(12)
             .font('Bold')
-            .table({rowStyles: { border: false }}).row(characters);
+            // .table({rowStyles: { border: false }}).row(characters);
+        let currentY = document.y
+        for (let character of range(characters.length, 0)) {
+            console.log(this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / characters.length),)
+            addEmphasizedText(document, characters[character] !== undefined ? characters[character] : "", {
+                align: 'left',
+                width: (document.page.width - this.defaultMargin * 2) / characters.length,
+            }, [this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / characters.length), currentY], true)
+        }
 
         document
             .moveUp(0.25)
