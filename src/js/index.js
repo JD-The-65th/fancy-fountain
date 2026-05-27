@@ -76,6 +76,7 @@ let sectionIterator = 0;
 
 doc.pipe(fs.createWriteStream(outputFilePath));
 
+
 let documentTitle = inputFilePath.split('\\').pop().split('/').pop();
 
 doc.on('pageAdded', () => scriptFormatter.addHeader(doc, documentTitle));
@@ -115,8 +116,9 @@ for (let sectionToken in script.title_page) {
 
 
 let dualDialogueCharacterPool = []
-let dualDialogueDialoguePool = []
+let dualDialogueDialoguePool = {}
 let dualDialoguePending = false
+let dualDialogueLineCount = 0
 
 for (let token in script.tokens) {
     let addCont = false
@@ -159,30 +161,25 @@ for (let token in script.tokens) {
                 dualDialogueCharacterPool.push(script.tokens[token].text)  
                 break;
             case "dialogue":
-                characterIndex = dualDialogueCharacterPool.indexOf(script.tokens[token].character)
-                if (dualDialogueDialoguePool[characterIndex] !== undefined) {
-                    dualDialogueDialoguePool[characterIndex] += "\n" + script.tokens[token].text
-                }
-                else {
-                    dualDialogueDialoguePool[characterIndex] = script.tokens[token].text
-                }
+                characterIndex = script.tokens[token].character
+                if (dualDialogueDialoguePool[characterIndex]) {dualDialogueDialoguePool[characterIndex].push(script.tokens[token].text)}
+                else (dualDialogueDialoguePool[characterIndex] = [script.tokens[token].text])
+                if (dualDialogueLineCount < dualDialogueDialoguePool[characterIndex].length) {dualDialogueLineCount = dualDialogueDialoguePool[characterIndex].length}
                 break;
             case "lyric":
-                characterIndex = dualDialogueCharacterPool.indexOf(script.tokens[token].character)
-                if (dualDialogueDialoguePool[characterIndex] !== undefined) {
-                    dualDialogueDialoguePool[characterIndex] += "\n" + script.tokens[token].text.toUpperCase()
-                }
-                else {
-                    dualDialogueDialoguePool[characterIndex] = script.tokens[token].text.toUpperCase()
-                }
+                characterIndex = script.tokens[token].character
+                if (dualDialogueDialoguePool[characterIndex]) {dualDialogueDialoguePool[characterIndex].push(script.tokens[token].text.toUpperCase())}
+                else (dualDialogueDialoguePool[characterIndex] = [script.tokens[token].text.toUpperCase()])
+                if (dualDialogueLineCount < dualDialogueDialoguePool[characterIndex].length) {dualDialogueLineCount = dualDialogueDialoguePool[characterIndex].length}
                 break;
         }
     }
     else if (dualDialoguePending) {
-        scriptFormatter.addDualDialogue(doc, dualDialogueCharacterPool, dualDialogueDialoguePool)
+        scriptFormatter.addDualDialogue(doc, dualDialogueCharacterPool, dualDialogueDialoguePool, dualDialogueLineCount)
         dualDialogueCharacterPool = []
         dualDialogueDialoguePool = []
         dualDialoguePending = false
+        dualDialogueLineCount = 0
     }
     else switch (script.tokens[token].type) {
         case "dialogue":

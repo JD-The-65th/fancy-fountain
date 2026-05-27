@@ -1,12 +1,16 @@
 import converter from 'number-to-words';
 import { formatter } from './formatter';
 import { addEmphasizedText } from "../utils/emphasizedTextUtils"
+import { getCurrentPageNumber } from '../utils/pdfUtils';
 
 // Note : 1 Inch == this.defaultMarginpx
 // Lyrics = 1 in from left
 // Dialogue = 1.5 in from left
 // Action = 2.5 in from left
 
+function range(size, startAt = 0) {
+    return [...Array(size).keys()].map(i => i + startAt);
+}
 
 class stageplayFormatter extends formatter {
     constructor(doc, booklet) {
@@ -206,18 +210,45 @@ class stageplayFormatter extends formatter {
             }, [this.defaultMargin, document.y])
     }
 
-    addDualDialogue(document, characters = [], text = []) {
+    addDualDialogue(document, characters = [], text = {}, lineCount) {
         document
+            .moveTo(this.defaultMargin, document.y)
             .fontSize(12)
             .font('Bold')
-            .table({rowStyles: { border: false },}).row(characters);
+            .table({rowStyles: { border: false }}).row(characters);
 
         document
             .moveUp(0.25)
+        
+        let itr = 0
+        for (let line in range(lineCount, 0)) {
+            document.moveUp(0.25)
+            let currentLines = []
+            let passesMarginCheck = true
+            for (let character of characters) {
+                currentLines.push(text[character][itr])
+            }
+            for (let characterLine of currentLines) {
+                if (passesMarginCheck) {
+                    passesMarginCheck = this.marginChecker(document, characterLine, "", 0, true)
+                }
+            }
+            if (!passesMarginCheck) {
+                this.addPageBreak(document, getCurrentPageNumber(document))
+                document
+                    .moveTo(this.defaultMargin, document.y)
+                    .fontSize(12)
+                    .font('Bold')
+                    .table({rowStyles: { border: false }}).row(characters);
+            }
 
-            .font('Regular')
+            document
+                .font("Regular")
+                .table({rowStyles: { border: false }}).row(currentLines);
+            itr += 1
+        }
 
-            .table({rowStyles: { border: false },}).row(text)
+            
     }
 
     addPageBreak(document, pageNumber) {
@@ -227,19 +258,33 @@ class stageplayFormatter extends formatter {
         document.addPage()
     }
 
-    marginChecker(document, lineOne, lineTwo, testLines = 0) {
+    marginChecker(document, lineOne, lineTwo, testLines = 0, dualDialogue = false) {
         document.font('Regular')
         const lineHeight = document.currentLineHeight(true);
+        let heightOne
+        let heightTwo
 
-
-        let heightOne = document.heightOfString(lineOne, {
+        if (!dualDialogue) {
+            heightOne = document.heightOfString(lineOne, {
                 width: document.page.width - (this.defaultMargin * 2),
                 align: 'left',
             })
-        let heightTwo = document.heightOfString(lineTwo, {
-                width: document.page.width - (this.defaultMargin * 2),
+            heightTwo = document.heightOfString(lineTwo, {
+                    width: document.page.width - (this.defaultMargin * 2),
+                    align: 'left',
+            })
+        }
+        else {
+            heightOne = document.heightOfString(lineOne, {
+                width: (document.page.width / 2) - (this.defaultMargin * 2),
                 align: 'left',
             })
+            heightTwo = document.heightOfString(lineTwo, {
+                width: (document.page.width / 2) - (this.defaultMargin * 2),
+                align: 'left',
+            })
+        }
+
         return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 60
     }
     
