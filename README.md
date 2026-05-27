@@ -16,7 +16,7 @@ fancy-fountain -I ref/aykm.fountain -O testing.pdf --font inter
 
 # Usability
 
-This project is approximately 98% complete. It contains support for nearly all fountain features, with the exception of Emphasis Markings on Dual Dialogue specifically.
+This project has achieved 100% feature parity with Fountain files. If there's anything missing, please make an issue.
 
 # Development
 
