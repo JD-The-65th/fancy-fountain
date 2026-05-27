@@ -222,19 +222,16 @@ class stageplayFormatter extends formatter {
         for (let character of range(characters.length, 0)) {
             let characterX = 0
             if (character === 0) {characterX = this.defaultMargin} else {characterX = this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / (character + 1))}
-            console.log(characterX)
             addEmphasizedText(document, characters[character] !== undefined ? characters[character] : "", {
                 align: 'left',
                 width: (document.page.width - this.defaultMargin * 2) / characters.length,
             }, [characterX, currentY], true)
         }
 
-        document
-            .moveUp(0.25)
+
         
         let itr = 0
         for (let line in range(lineCount, 0)) {
-            document.moveUp(0.25)
             let currentLines = []
             let passesMarginCheck = true
             for (let character of characters) {
@@ -248,15 +245,30 @@ class stageplayFormatter extends formatter {
             if (!passesMarginCheck) {
                 this.addPageBreak(document, getCurrentPageNumber(document))
                 document
-                    .moveTo(this.defaultMargin, document.y)
                     .fontSize(12)
                     .font('Bold')
-                    .table({rowStyles: { border: false }}).row(characters);
+                    // .table({rowStyles: { border: false }}).row(characters);
+                currentY = document.y
+                
+                for (let character of range(characters.length, 0)) {
+                    let characterX = 0
+                    if (character === 0) {characterX = this.defaultMargin} else {characterX = this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / (character + 1))}
+                    addEmphasizedText(document, characters[character] !== undefined ? characters[character] : "", {
+                        align: 'left',
+                        width: (document.page.width - this.defaultMargin * 2) / characters.length,
+                    }, [characterX, currentY], true)
+                }
             }
+            currentY = document.y
+            for (let character of range(characters.length, 0)) {
+                    let characterX = 0
+                    if (character === 0) {characterX = this.defaultMargin} else {characterX = this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / (character + 1))}
+                    addEmphasizedText(document, currentLines[character] !== undefined ? currentLines[character] : "", {
+                        align: 'left',
+                        width: (document.page.width - this.defaultMargin * 2) / characters.length,
+                    }, [characterX, currentY], true)
 
-            document
-                .font("Regular")
-                .table({rowStyles: { border: false }}).row(currentLines);
+                }
             itr += 1
         }
 
