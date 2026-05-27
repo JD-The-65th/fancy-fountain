@@ -2,21 +2,26 @@
 A Fancy Fountain App for exporting Fountain scripts.
 
 ## Why?
-For the sole purpose of exporting prettier scripts, primarily with Stageplay Formatting. It includes the EB Garamond, Courier, and Inter fonts, with custom font support coming in a later update.
+For the sole purpose of having a completely FOSS writing process for making stageplays and musicals. This project is mainly intended for stageplays, however it was written in a hackable way for other methods of formatting to be added at a later date.
+
+# Features
+
+- Stageplay formatting
+- Full compatibility with all Fountain Features
+- Easy Extendability
+- Booklet page exporting
+- Garamond, Courier, and Inter fonts
+
 
 # Usage
 
-```
+```shell
 fancy-fountain --input ref/aykm.fountain --output testing.pdf
 
 fancy-fountain -I ref/aykm.fountain -O testing.pdf --font inter
 
 ```
 
-
-# Usability
-
-This project has achieved 100% feature parity with Fountain files. If there's anything missing, please make an issue.
 
 # Development
 
