@@ -9,7 +9,7 @@ import { titlePageFormatter } from './formatter/titlePage.js';
 import { getCurrentPageNumber } from './utils/pdfUtils.js';
 
 function showHelpMessage() {
-    console.log("Fancy Fountain (v0.9)")
+    console.log("Fancy Fountain (v1.0.0)")
     console.log("Options:")
     console.log("   --input    |  -I             Input File Path (.fountain)")
     console.log("   --output   |  -O             Output File Path (.pdf) ")
