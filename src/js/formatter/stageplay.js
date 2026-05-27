@@ -216,6 +216,7 @@ class stageplayFormatter extends formatter {
         document
             .fontSize(12)
             .font('Bold')
+            .moveDown(0.5)
             // .table({rowStyles: { border: false }}).row(characters);
         let currentY = document.y
         
@@ -253,13 +254,14 @@ class stageplayFormatter extends formatter {
                 for (let character of range(characters.length, 0)) {
                     let characterX = 0
                     if (character === 0) {characterX = this.defaultMargin} else {characterX = this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / (character + 1))}
-                    addEmphasizedText(document, characters[character] !== undefined ? characters[character] : "", {
+                    addEmphasizedText(document, characters[character] !== undefined ? `(${characters[character]})` : "", {
                         align: 'left',
                         width: (document.page.width - this.defaultMargin * 2) / characters.length,
                     }, [characterX, currentY], true)
                 }
             }
             currentY = document.y
+            let lowestY = 0
             for (let character of range(characters.length, 0)) {
                     let characterX = 0
                     if (character === 0) {characterX = this.defaultMargin} else {characterX = this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / (character + 1))}
@@ -267,8 +269,10 @@ class stageplayFormatter extends formatter {
                         align: 'left',
                         width: (document.page.width - this.defaultMargin * 2) / characters.length,
                     }, [characterX, currentY])
+                    if (lowestY < document.y) {lowestY = document.y}
 
                 }
+            document.y = lowestY
             itr += 1
         }
 
