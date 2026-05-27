@@ -211,8 +211,8 @@ class stageplayFormatter extends formatter {
     }
 
     addDualDialogue(document, characters = [], text = {}, lineCount) {
+        document.x = this.defaultMargin
         document
-            .moveTo(this.defaultMargin, document.y)
             .fontSize(12)
             .font('Bold')
             .table({rowStyles: { border: false }}).row(characters);
