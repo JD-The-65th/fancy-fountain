@@ -266,7 +266,7 @@ class stageplayFormatter extends formatter {
                     addEmphasizedText(document, currentLines[character] !== undefined ? currentLines[character] : "", {
                         align: 'left',
                         width: (document.page.width - this.defaultMargin * 2) / characters.length,
-                    }, [characterX, currentY], true)
+                    }, [characterX, currentY])
 
                 }
             itr += 1
