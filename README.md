@@ -27,7 +27,7 @@ fancy-fountain -I ref/aykm.fountain -O testing.pdf --font inter
 
 This project uses NPM and Bun. A compatibility mode for Node will eventually be made as development originally used NodeJS
 
-To run this repository, clone it, run `npm init`, then run `bun src/js/index.js`
+To run this repository, clone it, run `bun install`, then run `bun src/js/index.js`
 
 To compile this program, the command `bun build src/js/index.js --compile --minify --sourcemap --bytecode --outfile ./bin/fancy-fountain` was used.
 
