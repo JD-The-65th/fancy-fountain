@@ -14,6 +14,7 @@ function showHelpMessage() {
     console.log("   --input    |  -I             Input File Path (.fountain)")
     console.log("   --output   |  -O             Output File Path (.pdf) ")
     console.log("   --font     |  -F             Selects a font to use ( garamond | inter | courier | helvetica ) ")
+    console.log("   --booklet  |  -B             Sets the output page size to be Half Letter Paper (5.5 x 8.5 in) ")
     console.log("   --help     |  -H             Displays this help message and exits. ")
     console.log("\nUsage: fancy-fountain --input ref/aykm.fountain --output testing.pdf")
 }

@@ -15,7 +15,7 @@ For the sole purpose of having a completely FOSS writing process for making stag
 
 # Usage
 
-```shell
+```bash
 fancy-fountain --input ref/aykm.fountain --output testing.pdf
 
 fancy-fountain -I ref/aykm.fountain -O testing.pdf --font inter
