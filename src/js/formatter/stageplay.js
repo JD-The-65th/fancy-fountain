@@ -218,12 +218,15 @@ class stageplayFormatter extends formatter {
             .font('Bold')
             // .table({rowStyles: { border: false }}).row(characters);
         let currentY = document.y
+        
         for (let character of range(characters.length, 0)) {
-            console.log(this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / characters.length),)
+            let characterX = 0
+            if (character === 0) {characterX = this.defaultMargin} else {characterX = this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / (character + 1))}
+            console.log(characterX)
             addEmphasizedText(document, characters[character] !== undefined ? characters[character] : "", {
                 align: 'left',
                 width: (document.page.width - this.defaultMargin * 2) / characters.length,
-            }, [this.defaultMargin + ((document.page.width - this.defaultMargin * 2) / characters.length), currentY], true)
+            }, [characterX, currentY], true)
         }
 
         document
