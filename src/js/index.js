@@ -41,7 +41,7 @@ for (let arg in args) {
             font = ["garamond", "inter", "courier", "helvetica"].includes(args[Number(arg) + 1]) ? args[Number(arg) + 1] : "garamond";
             break;
         case ("--help"):
-        case ("-F"):
+        case ("-H"):
             showHelpMessage()
             process.exit()
             break;
