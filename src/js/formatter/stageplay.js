@@ -313,7 +313,7 @@ class stageplayFormatter extends formatter {
             })
         }
 
-        return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 60
+        return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 70
     }
     
 }
