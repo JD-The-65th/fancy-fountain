@@ -168,7 +168,7 @@ class stageplayFormatter extends formatter {
         let oldX = document.x
         document
             .fontSize(12)
-        addEmphasizedText(document, `(${parentheticalText})`, {
+        addEmphasizedText(document, parentheticalText, {
                 width: document.page.width - (this.defaultMargin + 54) - this.defaultMargin,
                 align: 'left',
                 oblique: true
@@ -313,7 +313,7 @@ class stageplayFormatter extends formatter {
             })
         }
 
-        return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 70
+        return heightOne + heightTwo + document.y + (lineHeight) + (lineHeight * testLines) < document.page.height - 72
     }
     
 }
